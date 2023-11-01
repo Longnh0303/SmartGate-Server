@@ -10,7 +10,7 @@ const login = async (req, res) => {
   const user = await User.findOne({ email });
   if (!user) {
     return res
-      .status(httpStatus.UNAUTHORIZED)
+      .status(httpStatus.NOT_FOUND)
       .json({ message: "User not found!" });
   }
 

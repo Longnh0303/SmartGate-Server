@@ -43,31 +43,9 @@ const getUserByID = async (req, res) => {
 // Get all users
 const getUsers = async (req, res, next) => {
   try {
-    // Lấy role từ query params. Nếu không có sẽ mặc định là null (lấy tất cả)
-    let userRole = null;
-    if (typeof req.query.role !== "undefined") {
-      userRole =
-        req.query.role === "manager"
-          ? "manager"
-          : req.query.role === "operator"
-          ? "operator"
-          : null;
-    }
-
-    // Thiết lập các thông số phân trang từ query params
-    const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 10;
-
-    // Tạo filter dựa trên role
-    const filter = userRole !== null ? { role: userRole } : {};
-
-    // Giả định bạn có một model tên là User. Sử dụng mongoose-paginate để lấy dữ liệu
-    const users = await User.paginate(filter, {
-      page,
-      limit,
-    });
-
-    return res.status(httpStatus.OK).json(users);
+    const users = await User.find();
+    const response = users.map((user) => ({ ...user._doc, id: user._id }));
+    return res.status(httpStatus.OK).json(response);
   } catch (error) {
     console.error("Failed to fetch users:", error);
     return res

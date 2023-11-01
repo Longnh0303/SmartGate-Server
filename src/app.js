@@ -14,7 +14,6 @@ const PORT = process.env.PORT;
 const cors = require("cors");
 const corsOptions = require("./config/cors");
 const app = express();
-const fs = require("fs");
 
 // Connect Database
 connectDB();
