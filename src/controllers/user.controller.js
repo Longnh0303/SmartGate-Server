@@ -40,12 +40,24 @@ const getUserByID = async (req, res) => {
   res.json(user);
 };
 
-// Get all users
 const getUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
-    const response = users.map((user) => ({ ...user._doc, id: user._id }));
-    return res.status(httpStatus.OK).json(response);
+    const { searchTerm } = req.query;
+
+    // Kiểm tra xem searchTerm có được cung cấp hay không
+    if (!searchTerm) {
+      const users = await User.find();
+      const response = users.map((user) => ({ ...user._doc, id: user._id }));
+      return res.status(httpStatus.OK).json(response);
+    } else {
+      // Sử dụng RegExp để tạo mẫu tìm kiếm không phân biệt hoa thường
+      const searchPattern = new RegExp(searchTerm, "i");
+
+      // Tìm các người dùng có tên chứa chuỗi tìm kiếm
+      const users = await User.find({ username: searchPattern });
+      const response = users.map((user) => ({ ...user._doc, id: user._id }));
+      return res.status(httpStatus.OK).json(response);
+    }
   } catch (error) {
     console.error("Failed to fetch users:", error);
     return res
@@ -53,6 +65,8 @@ const getUsers = async (req, res, next) => {
       .json({ error: "Failed to fetch users" });
   }
 };
+
+
 
 // Update user
 const updateUser = async (req, res) => {
