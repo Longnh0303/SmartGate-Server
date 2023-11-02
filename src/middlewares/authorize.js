@@ -5,7 +5,7 @@ module.exports = (roles) => {
     if (!req.user || !roles.includes(req.user.role)) {
       return res
         .status(httpStatus.FORBIDDEN)
-        .send({ message: "Access denied" });
+        .send({ message: "Bạn không có quyền thực hiện thao tác" });
     }
     next();
   };

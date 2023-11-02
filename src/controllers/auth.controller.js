@@ -11,7 +11,7 @@ const login = async (req, res) => {
   if (!user) {
     return res
       .status(httpStatus.NOT_FOUND)
-      .json({ message: "User not found!" });
+      .json({ message: "Người dùng không tồn tại!" });
   }
 
   // So sánh mật khẩu
@@ -19,7 +19,7 @@ const login = async (req, res) => {
   if (!validPassword) {
     return res
       .status(httpStatus.UNAUTHORIZED)
-      .json({ message: "Invalid email or password" });
+      .json({ message: "Tài khoản hoặc mật khẩu không chính xác" });
   }
 
   // Tạo JWT token
@@ -31,11 +31,11 @@ const login = async (req, res) => {
     }
   );
 
-  res.json({ message: "Logged in successfully", user, token });
+  res.json({ message: "Đăng nhập thành công", user, token });
 };
 
 const logout = (req, res) => {
-  return res.status(httpStatus.OK).json({ message: "Logout successful" });
+  return res.status(httpStatus.OK).json({ message: "Đăng xuất thành công" });
 };
 
 module.exports = {

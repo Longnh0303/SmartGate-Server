@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
   if (!token)
     return res
       .status(httpStatus.UNAUTHORIZED)
-      .send({ message: "No Token Provided" });
+      .send({ message: "Nhận token thất bại" });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -17,6 +17,6 @@ module.exports = async (req, res, next) => {
     if (!req.user) throw new Error();
     next();
   } catch (error) {
-    res.status(httpStatus.BAD_REQUEST).send({ message: "Invalid token" });
+    res.status(httpStatus.BAD_REQUEST).send({ message: "Token không hợp lệ" });
   }
 };

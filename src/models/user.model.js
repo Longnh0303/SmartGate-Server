@@ -13,6 +13,10 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type: String,
+      required: false,
+    },
     password: {
       type: String,
       required: true,
