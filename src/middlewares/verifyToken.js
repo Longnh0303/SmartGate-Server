@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
   if (!token)
     return res
       .status(httpStatus.UNAUTHORIZED)
-      .send({ message: "Nhận token thất bại" });
+      .send({ message: "Xin hãy xác thực" });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

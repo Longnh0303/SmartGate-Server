@@ -1,6 +1,7 @@
 const express = require("express");
 const authRoute = require("./auth.route");
 const userRoute = require("./user.route");
+const rfidRoute = require("./rfid.route")
 
 const router = express.Router();
 
@@ -12,6 +13,10 @@ const defaultRoutes = [
   {
     path: "/auth",
     route: authRoute,
+  },
+  {
+    path: "/rfid",
+    route: rfidRoute,
   },
 ];
 
