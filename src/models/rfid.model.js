@@ -13,35 +13,33 @@ const RfidSchema = new Schema(
       default: 0,
     },
     status: {
-        type: String,
-        enum: ["checkedIn", "checkedOut"],
-        default: "checkedOut",
-      },
-        name: {
-          type: String,
-        },
-        usercode: {
-            type: String,
-            required: true
-          },
-        role: {
-            type: String,
-            enum: ["student", "teacher", "employee"],
-            default: "student",
-          },
-        department: {
-          type: String,
-        },
-        carInfo: {
-          type: String,
-        },
-        carColor: {
-            type: String,
-          },
-        licensePlates: {
-          type: String,
-        },
-     
+      type: String,
+      enum: ["checkedIn", "checkedOut"],
+      default: "checkedOut",
+    },
+    name: {
+      type: String,
+    },
+    usercode: {
+      type: String,
+    },
+    role: {
+      type: String,
+      enum: ["student", "teacher", "employee", "guest"],
+      default: "student",
+    },
+    department: {
+      type: String,
+    },
+    carInfo: {
+      type: String,
+    },
+    carColor: {
+      type: String,
+    },
+    licensePlates: {
+      type: String,
+    },
   },
   {
     timestamps: true,

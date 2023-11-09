@@ -1,7 +1,6 @@
 const Rfid = require("../models/rfid.model");
 const httpStatus = require("http-status");
 
-
 // Create a new Rfid
 const createRfid = async (req, res) => {
   try {
@@ -51,33 +50,37 @@ const createRfid = async (req, res) => {
   }
 };
 
-  const getRfids = async (req, res, next) => {
-    try {
-      const { searchTerm } = req.query;
-  
-      // Kiểm tra xem searchTerm có được cung cấp hay không
-      if (!searchTerm) {
-        const Rfids = await Rfid.find();
-        return res.status(httpStatus.OK).json(Rfids);
-      } else {
-        // Sử dụng RegExp để tạo mẫu tìm kiếm không phân biệt hoa thường
-        const searchPattern = new RegExp(searchTerm, "i");
-  
-        // Tìm các RFID có trường "name" trong "userInfo" chứa chuỗi tìm kiếm
-        const Rfids = await Rfid.find({
-          "name": searchPattern,
-        });
-  
-        return res.status(httpStatus.OK).json(Rfids);
-      }
-    } catch (error) {
-      console.error("Yêu cầu thất bại:", error);
-      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-        error: "Yêu cầu thất bại",
+// Get RFIDs
+const getRfids = async (req, res, next) => {
+  try {
+    const { searchTerm } = req.query;
+
+    // Kiểm tra xem searchTerm có được cung cấp hay không
+    if (!searchTerm) {
+      const Rfids = await Rfid.find();
+      const response = Rfids.map((rfid) => ({ ...rfid._doc, id: rfid._id }));
+
+      return res.status(httpStatus.OK).json(response);
+    } else {
+      // Sử dụng RegExp để tạo mẫu tìm kiếm không phân biệt hoa thường
+      const searchPattern = new RegExp(searchTerm, "i");
+
+      // Tìm các RFID có trường "name" trong "userInfo" chứa chuỗi tìm kiếm
+      const Rfids = await Rfid.find({
+        name: searchPattern,
       });
+
+      const response = Rfids.map((rfid) => ({ ...rfid._doc, id: rfid._id }));
+      return res.status(httpStatus.OK).json(response);
     }
-  };
-  
+  } catch (error) {
+    console.error("Yêu cầu thất bại:", error);
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      error: "Yêu cầu thất bại",
+    });
+  }
+};
+
 // Get RFID by Card ID
 const getCardById = async (req, res) => {
   try {
@@ -112,20 +115,20 @@ const updateRfid = async (req, res) => {
     if (!rfid) {
       return res
         .status(httpStatus.NOT_FOUND)
-        .json({ message: 'Không tìm thấy thẻ trong hệ thống' });
+        .json({ message: "Không tìm thấy thẻ trong hệ thống" });
     }
 
-        // Kiểm tra xem có gửi lên cardId
-        if (updatedData.cardId) {
-          // Kiểm tra xem cardId đã tồn tại trong hệ thống chưa
-          const existingRfid = await Rfid.findOne({ cardId: updatedData.cardId });
-    
-          if (existingRfid && existingRfid._id.toString() !== id) {
-            return res
-              .status(httpStatus.BAD_REQUEST)
-              .json({ message: 'Thẻ đã tồn tại trong hệ thống' });
-          }
-        }
+    // Kiểm tra xem có gửi lên cardId
+    if (updatedData.cardId) {
+      // Kiểm tra xem cardId đã tồn tại trong hệ thống chưa
+      const existingRfid = await Rfid.findOne({ cardId: updatedData.cardId });
+
+      if (existingRfid && existingRfid._id.toString() !== id) {
+        return res
+          .status(httpStatus.BAD_REQUEST)
+          .json({ message: "Thẻ đã tồn tại trong hệ thống" });
+      }
+    }
     // Cập nhật thông tin "Rfid" với dữ liệu mới
     for (const key in updatedData) {
       if (Object.prototype.hasOwnProperty.call(updatedData, key)) {
@@ -138,10 +141,10 @@ const updateRfid = async (req, res) => {
 
     return res.status(httpStatus.OK).json(rfid);
   } catch (error) {
-    console.error('Yêu cầu thất bại:', error);
+    console.error("Yêu cầu thất bại:", error);
     return res
       .status(httpStatus.INTERNAL_SERVER_ERROR)
-      .json({ error: 'Yêu cầu thất bại' });
+      .json({ error: "Yêu cầu thất bại" });
   }
 };
 
@@ -167,10 +170,10 @@ const deleteRfid = async (req, res) => {
   }
 };
 
-  module.exports = {
-    createRfid,
-    getRfids,
-    getCardById,
-    updateRfid,
-    deleteRfid
-  };
+module.exports = {
+  createRfid,
+  getRfids,
+  getCardById,
+  updateRfid,
+  deleteRfid,
+};
