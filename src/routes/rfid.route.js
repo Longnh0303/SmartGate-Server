@@ -1,37 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const rfidController = require("../controllers/rfid.controller");
 const authorize = require("../middlewares/authorize");
 const verifyToken = require("../middlewares/verifyToken");
+const rfidController = require("../controllers/rfid.controller");
 
-router.post(
-    "/",
-    verifyToken,
-    authorize(["manager"]),
-    rfidController.createRfid
-  );
+// Middleware that applies to all routes
+router.use(verifyToken, authorize(["manager"]));
 
-  
-router.get(
-  "/card/:cardId",
-  verifyToken,
-  rfidController.getCardById
-);
+router.route("/").get(rfidController.getRfids).post(rfidController.createRfid);
 
-router.patch(
-  "/:id",
-  verifyToken,
-  authorize(["manager"]),
-  rfidController.updateRfid
-);
-
-router.get("/", verifyToken, authorize(["manager"]), rfidController.getRfids);
-
-router.delete(
-  "/:id",
-  verifyToken,
-  authorize(["manager"]),
-  rfidController.deleteRfid
-);
+router
+  .route("/:id")
+  .get(rfidController.getRfidByID)
+  .patch(rfidController.updateRfid)
+  .delete(rfidController.deleteRfid);
 
 module.exports = router;

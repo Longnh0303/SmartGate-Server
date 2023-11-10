@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { User } = require("../models");
+const logger = require("./logger");
 
 const connectDB = async () => {
   try {
@@ -7,7 +8,7 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("MongoDB connected !");
+    logger.info("MongoDB Connected");
     const user = await User.findOne({ email: "admin@gmail.com" });
     if (!user) {
       await User.create({
@@ -16,12 +17,12 @@ const connectDB = async () => {
         password: "123456a",
         role: "manager",
       });
-      console.log("Created admin user");
+      logger.info("Created admin user");
     } else {
-      console.log("Admin user existed");
+      logger.info("Admin user existed");
     }
   } catch (err) {
-    console.error(err.message);
+    logger.error(err.message);
     process.exit(1);
   }
 };

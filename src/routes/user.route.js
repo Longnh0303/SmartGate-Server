@@ -4,34 +4,16 @@ const userController = require("../controllers/user.controller");
 const authorize = require("../middlewares/authorize");
 const verifyToken = require("../middlewares/verifyToken");
 
-router.post(
-  "/",
-  verifyToken,
-  authorize(["manager"]),
-  userController.createUser
-);
+// Middleware that applies to all routes
+router.use(verifyToken, authorize(["manager"]));
 
-router.get(
-  "/:id",
-  verifyToken,
-  authorize(["manager"]),
-  userController.getUserByID
-);
+router.route("/")
+  .post(userController.createUser)
+  .get(userController.getUsers);
 
-router.get("/", verifyToken, authorize(["manager"]), userController.getUsers);
-
-router.patch(
-  "/:id",
-  verifyToken,
-  authorize(["manager"]),
-  userController.updateUser
-);
-
-router.delete(
-  "/:id",
-  verifyToken,
-  authorize(["manager"]),
-  userController.deleteUser
-);
+router.route("/:id")
+  .get(userController.getUserByID)
+  .patch(userController.updateUser)
+  .delete(userController.deleteUser);
 
 module.exports = router;

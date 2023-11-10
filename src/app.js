@@ -1,32 +1,56 @@
 const express = require("express");
-const connectDB = require("./config/db");
-const routes = require("./routes");
-require("dotenv").config({
-  path:
-    process.env.NODE_ENV === "production"
-      ? ".env.production"
-      : ".env.development",
-});
-const handleErrors = require("./middlewares/handleErrors");
-require("express-async-errors");
-const PORT = process.env.PORT;
-// CORS middleware
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const mongoSanitize = require("express-mongo-sanitize");
+const compression = require("compression");
 const cors = require("cors");
-const corsOptions = require("./config/cors");
+const httpStatus = require("http-status");
+const config = require("./config/config");
+const morgan = require("./config/morgan");
+const { authLimiter } = require("./middlewares/rateLimiter");
+const routes = require("./routes");
+const { errorConverter, errorHandler } = require("./middlewares/error");
+const ApiError = require("./utils/ApiError");
+
 const app = express();
 
-// Connect Database
-connectDB();
+// set security HTTP headers
+app.use(helmet());
 
-// Middleware for parsing request bodies
+// parse json request body
 app.use(express.json());
 
-// allow all Cross Site Resource Sharing (CORS)
-app.use(cors(corsOptions));
+// parse urlencoded request body
+app.use(express.urlencoded({ extended: true }));
 
-// Routes
+// sanitize request data
+app.use(xss());
+app.use(mongoSanitize());
+
+// gzip compression
+app.use(compression());
+
+// enable cors
+app.use(cors());
+app.options("*", cors());
+
+// limit repeated failed requests to auth endpoints
+if (config.env === "production") {
+  app.use("/api/auth", authLimiter);
+}
+
+// routes
 app.use("/api", routes);
-// Handle errors
-app.use(handleErrors);
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+// send back a 404 error for any unknown api request
+app.use((req, res, next) => {
+  next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
+});
+
+// convert error to ApiError, if needed
+app.use(errorConverter);
+
+// Handle errors
+app.use(errorHandler);
+
+module.exports = app;

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const { toJSON } = require('./plugins');
 
-const RfidSchema = new Schema(
+const RfidSchema = mongoose.Schema(
   {
     cardId: {
       type: String,
@@ -45,6 +45,13 @@ const RfidSchema = new Schema(
     timestamps: true,
   }
 );
+
+RfidSchema.statics.isCardIdExisted = async function (cardId, excludeCardId) {
+  const rfid = await this.findOne({ cardId, _id: { $ne: excludeCardId } });
+  return !!rfid;
+};
+
+RfidSchema.plugin(toJSON);
 
 const Rfid = mongoose.model("Rfid", RfidSchema);
 module.exports = Rfid;
