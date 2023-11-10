@@ -10,9 +10,9 @@ const checkCardAndPayment = async (body) => {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       "Thẻ không tồn tại trong hệ thống !"
-    );
-  }
-
+      );
+    }
+    
   const history = await History.findOne({ cardId, done: false });
 
   // Nếu chưa có lịch sử tức là xe đang vào trường => Cần tạo 1 lịch sử
@@ -24,6 +24,7 @@ const checkCardAndPayment = async (body) => {
     });
     return history;
   } else {
+    // Nếu có rồi tức là xe đang đi ra khỏi trường => Cần tính tiền
     const cost = 3000; // VND
     if (rfid.balance < cost) {
       throw new ApiError(
@@ -32,14 +33,15 @@ const checkCardAndPayment = async (body) => {
       );
     }
 
-    // Tính toán tiền và lưu lại
+    // Tính toán tiền và lưu lại ở thông tin thẻ và ở lịch sử
     const newBalance = rfid.balance - cost;
     rfid.balance = newBalance;
     history.new_balance = newBalance;
 
-    // Nếu có rồi thì cần trừ tiền và cập nhật thời gian ra
+    // Cập nhật thời gian check out và trạng thái hoàn thành
     history.time_check_out = Date.now();
     history.done = true;
+
     // Lưu lại thông tin thẻ và lịch sử
     await rfid.save();
     await history.save();

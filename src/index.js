@@ -1,22 +1,25 @@
-const mongoose = require('mongoose');
-const app = require('./app');
-const config = require('./config/config');
-const logger = require('./config/logger');
-const { userService } = require('./services'); 
+const mongoose = require("mongoose");
+const app = require("./app");
+const config = require("./config/config");
+const logger = require("./config/logger");
+const { userService } = require("./services");
+const socketIo = require("socket.io");
+const socketService = require('./services/socket.service');
 
 let server;
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
-  logger.info('MongoDB Connected !');
+  logger.info("MongoDB Connected !");
   server = app.listen(config.port, async () => {
     logger.info(`Server started on port ${config.port}`);
     await userService.createAdmin();
+    socketService.initSocketHandler(server);
   });
 });
 
 const exitHandler = () => {
   if (server) {
     server.close(() => {
-      logger.info('Server closed');
+      logger.info("Server closed");
       process.exit(1);
     });
   } else {
@@ -29,11 +32,11 @@ const unexpectedErrorHandler = (error) => {
   exitHandler();
 };
 
-process.on('uncaughtException', unexpectedErrorHandler);
-process.on('unhandledRejection', unexpectedErrorHandler);
+process.on("uncaughtException", unexpectedErrorHandler);
+process.on("unhandledRejection", unexpectedErrorHandler);
 
-process.on('SIGTERM', () => {
-  logger.info('SIGTERM received');
+process.on("SIGTERM", () => {
+  logger.info("SIGTERM received");
   if (server) {
     server.close();
   }
