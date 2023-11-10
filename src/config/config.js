@@ -34,6 +34,7 @@ module.exports = {
   },
   jwt: {
     secret: envVars.JWT_SECRET,
+    accessExpiration: envVars.JWT_ACCESS_EXPIRATION_DAY
   },
   admin: {
     email: envVars.ADMIN_EMAIL,

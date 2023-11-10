@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authorize = require("../middlewares/authorize");
 const verifyToken = require("../middlewares/verifyToken");
-const rfidController = require("../controllers/rfid.controller");
+const { rfidController } = require("../controllers");
 
 // Middleware that applies to all routes
 router.use(verifyToken, authorize(["manager"]));

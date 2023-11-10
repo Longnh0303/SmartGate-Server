@@ -1,41 +1,25 @@
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const User = require("../models/user.model");
 const httpStatus = require("http-status");
+const { authService } = require("../services");
+const catchAsync = require("../utils/catchAsync");
+const config = require("../config/config");
 
-const login = async (req, res) => {
+const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
-
-  // Tìm người dùng bằng email
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res
-      .status(httpStatus.NOT_FOUND)
-      .json({ message: "Người dùng không tồn tại!" });
-  }
-
-  // So sánh mật khẩu
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) {
-    return res
-      .status(httpStatus.UNAUTHORIZED)
-      .json({ message: "Tài khoản hoặc mật khẩu không chính xác" });
-  }
+  const user = await authService.loginWithEmailAndPassword(email, password);
 
   // Tạo JWT token
-  const token = jwt.sign(
-    { id: user._id, role: user.role },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "1d",
-    }
-  );
+  const token = jwt.sign({ id: user._id, role: user.role }, config.jwt.secret, {
+    expiresIn: config.jwt.accessExpiration + "d",
+  });
 
   res.json({ message: "Đăng nhập thành công", user, token });
-};
+});
 
-const logout = (req, res) => {
-  return res.status(httpStatus.OK).json({ message: "Đăng xuất thành công" });
+const logout = (_req, res) => {
+  return res
+    .status(httpStatus.NO_CONTENT)
+    .send({ message: "Đăng xuất thành công" });
 };
 
 module.exports = {

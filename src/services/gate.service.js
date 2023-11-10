@@ -1,5 +1,5 @@
 const httpStatus = require("http-status");
-const { rfidService } = require("./index");
+const rfidService = require("./rfid.service");
 const { History } = require("../models");
 const ApiError = require("../utils/ApiError");
 
