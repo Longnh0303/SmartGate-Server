@@ -26,7 +26,7 @@ const checkCardAndPayment = async (body) => {
   } else {
     // Nếu có rồi tức là xe đang đi ra khỏi trường => Cần tính tiền
     const cost = 3000; // VND
-    if (rfid.balance < cost) {
+    if (rfid.role ==='student' && rfid.balance < cost) {
       throw new ApiError(
         httpStatus.BAD_REQUEST,
         "Số dư không đủ để thanh toán"
@@ -34,10 +34,12 @@ const checkCardAndPayment = async (body) => {
     }
 
     // Tính toán tiền và lưu lại ở thông tin thẻ và ở lịch sử
-    const newBalance = rfid.balance - cost;
-    rfid.balance = newBalance;
-    history.new_balance = newBalance;
-
+    if(rfid.role ==='student' && rfid.balance >= cost){
+      const newBalance = rfid.balance - cost;
+      rfid.balance = newBalance;
+      history.new_balance = newBalance;
+    }
+ 
     // Cập nhật thời gian check out và trạng thái hoàn thành
     history.time_check_out = Date.now();
     history.done = true;
