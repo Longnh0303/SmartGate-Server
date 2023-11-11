@@ -3,12 +3,11 @@ const app = require("./app");
 const config = require("./config/config");
 const logger = require("./config/logger");
 const { userService } = require("./services");
-const socketIo = require("socket.io");
 const socketService = require('./services/socket.service');
 
 let server;
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
-  logger.info("MongoDB Connected !");
+  logger.info("MongoDB connected");
   server = app.listen(config.port, async () => {
     logger.info(`Server started on port ${config.port}`);
     await userService.createAdmin();

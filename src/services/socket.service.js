@@ -6,13 +6,13 @@ let io;
 const initSocketHandler = (httpServer) => {
   try {
     io = socketIO(httpServer);
-    logger.info("Socket.io initialized!");
+    logger.info("Socket.io initialized");
 
     io.on("connection", (socket) => {
       // Tạo ra room để gửi dữ liệu real-time
       socket.join("realtime-room");
       // Gửi tin nhắn chào mừng
-      socket.emit("welcome", "Welcome to the admin room!");
+      socket.emit("welcome", "Welcome to the admin room");
     });
 
     io.on("error", (error) => {
@@ -28,7 +28,7 @@ const initSocketHandler = (httpServer) => {
 
 const getIO = () => {
   if (!io) {
-    throw new Error("Socket.io not initialized!");
+    throw new Error("Socket.io not initialized");
   }
   return io;
 };

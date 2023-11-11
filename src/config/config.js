@@ -10,6 +10,7 @@ const envVarsSchema = Joi.object()
     PORT: Joi.number().default(5000),
     DB_URI: Joi.string().required().description('Mongo DB url'),
     JWT_SECRET: Joi.string().required().description('JWT secret key'),
+    JWT_ACCESS_EXPIRATION_DAY: Joi.number().required().description('JWT access expiration key'),
     ADMIN_PASSWORD: Joi.string().required().description('admin password for first time setup'),
     ADMIN_EMAIL: Joi.string().required().email().description('admin email for first time setup'),
   })

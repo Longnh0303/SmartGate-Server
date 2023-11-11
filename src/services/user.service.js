@@ -50,10 +50,10 @@ const deleteUserById = async (userId) => {
 
 const createAdmin = async () => {
   if (await User.isEmailTaken(configs.admin.email)) {
-    logger.info(`EXISTED admin - ${configs.admin.email}`);
+    logger.info(`Existed account ${configs.admin.email}`);
     return;
   }
-  logger.info(`CREATED admin - ${configs.admin.email}`);
+  logger.info(`Created account ${configs.admin.email}`);
   return User.create(configs.admin);
 };
 

@@ -5,7 +5,7 @@ const userService = require("./user.service");
 const getAccount = async (userId) => {
   const user = await userService.getUserById(userId);
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Người dùng không tồn tại!");
+    throw new ApiError(httpStatus.NOT_FOUND, "Người dùng không tồn tại");
   }
 
   return user;

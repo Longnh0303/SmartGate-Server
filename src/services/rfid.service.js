@@ -6,7 +6,7 @@ const createRfid = async (rfidBody) => {
   if (await Rfid.isCardIdExisted(rfidBody.cardId)) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      "Đã tồn tại thẻ trong hệ thống!"
+      "Thẻ đã tồn tại"
     );
   }
   return Rfid.create(rfidBody);
@@ -31,7 +31,7 @@ const updateRfidById = async (id, updateBody) => {
 
   // Kiểm tra nếu ther đã tồn tại
   if (updateBody.cardId) {
-    if (await Rfid.isCardIdExisted(updateBody.cardId)) {
+    if (await Rfid.isCardIdExisted(updateBody.cardId, id)) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Thẻ đã tồn tại");
     }
 

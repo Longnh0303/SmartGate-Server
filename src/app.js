@@ -6,7 +6,6 @@ const compression = require("compression");
 const cors = require("cors");
 const httpStatus = require("http-status");
 const config = require("./config/config");
-const morgan = require("./config/morgan");
 const { authLimiter } = require("./middlewares/rateLimiter");
 const routes = require("./routes");
 const { errorConverter, errorHandler } = require("./middlewares/error");
@@ -43,8 +42,8 @@ if (config.env === "production") {
 app.use("/api", routes);
 
 // send back a 404 error for any unknown api request
-app.use((req, res, next) => {
-  next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
+app.use((_req, _res, next) => {
+  next(new ApiError(httpStatus.NOT_FOUND, "API not found"));
 });
 
 // convert error to ApiError, if needed

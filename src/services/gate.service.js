@@ -9,7 +9,7 @@ const checkCardAndPayment = async (body) => {
   if (!rfid) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      "Thẻ không tồn tại trong hệ thống !"
+      "Thẻ không tồn tại trong hệ thống"
       );
     }
     
@@ -29,7 +29,7 @@ const checkCardAndPayment = async (body) => {
     if (rfid.balance < cost) {
       throw new ApiError(
         httpStatus.BAD_REQUEST,
-        "Số dư không đủ để thanh toán!"
+        "Số dư không đủ để thanh toán"
       );
     }
 

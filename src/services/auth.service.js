@@ -6,13 +6,13 @@ const loginWithEmailAndPassword = async (email, password) => {
   const user = await userService.getUserByEmail(email);
 
   if (!user) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Tài khoản không tồn tại !");
+    throw new ApiError(httpStatus.BAD_REQUEST, "Tài khoản không tồn tại");
   }
 
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(
       httpStatus.UNAUTHORIZED,
-      "Email hoặc mật khẩu không đúng !"
+      "Email hoặc mật khẩu không đúng"
     );
   }
   return user;
