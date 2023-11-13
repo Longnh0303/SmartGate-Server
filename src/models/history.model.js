@@ -6,6 +6,12 @@ const HistorySchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  name: {
+    type: String,
+  },
+  role: {
+    type: String,
+  },
   old_balance: {
     type: Number,
   },

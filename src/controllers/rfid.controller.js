@@ -15,7 +15,7 @@ const getRfids = catchAsync(async (req, res, _next) => {
   let results;
   // Kiểm tra xem searchTerm có được cung cấp hay không
   if (!searchTerm) {
-    results = await Rfid.find();
+    results = await rfidService.getRfids();
   } else {
     // Sử dụng RegExp để tạo mẫu tìm kiếm không phân biệt hoa thường
     const searchPattern = new RegExp(searchTerm, "i");

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { toJSON } = require('./plugins');
+const { toJSON } = require("./plugins");
 
 const RfidSchema = mongoose.Schema(
   {
@@ -12,13 +12,9 @@ const RfidSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
-    status: {
-      type: String,
-      enum: ["checkedIn", "checkedOut"],
-      default: "checkedOut",
-    },
     name: {
       type: String,
+      default: "",
     },
     usercode: {
       type: String,

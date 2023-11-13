@@ -10,9 +10,9 @@ const checkCardAndPayment = async (body) => {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       "Thẻ không tồn tại trong hệ thống"
-      );
-    }
-    
+    );
+  }
+
   const history = await History.findOne({ cardId, done: false });
 
   // Nếu chưa có lịch sử tức là xe đang vào trường => Cần tạo 1 lịch sử
@@ -21,12 +21,14 @@ const checkCardAndPayment = async (body) => {
       cardId,
       time_check_in: Date.now(),
       old_balance: rfid.balance,
+      name: rfid.name,
+      role: rfid.role,
     });
     return history;
   } else {
     // Nếu có rồi tức là xe đang đi ra khỏi trường => Cần tính tiền
     const cost = 3000; // VND
-    if (rfid.role ==='student' && rfid.balance < cost) {
+    if (rfid.role === "student" && rfid.balance < cost) {
       throw new ApiError(
         httpStatus.BAD_REQUEST,
         "Số dư không đủ để thanh toán"
@@ -34,12 +36,14 @@ const checkCardAndPayment = async (body) => {
     }
 
     // Tính toán tiền và lưu lại ở thông tin thẻ và ở lịch sử
-    if(rfid.role ==='student' && rfid.balance >= cost){
+    if (rfid.role === "student" && rfid.balance >= cost) {
       const newBalance = rfid.balance - cost;
       rfid.balance = newBalance;
       history.new_balance = newBalance;
+    } else {
+      history.new_balance = rfid.balance;
     }
- 
+
     // Cập nhật thời gian check out và trạng thái hoàn thành
     history.time_check_out = Date.now();
     history.done = true;

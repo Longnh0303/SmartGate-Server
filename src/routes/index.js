@@ -1,9 +1,10 @@
 const express = require("express");
 const authRoute = require("./auth.route");
 const userRoute = require("./user.route");
-const rfidRoute = require("./rfid.route")
-const accountRoute = require("./account.route")
-const gateRoute = require("./gate.route")
+const rfidRoute = require("./rfid.route");
+const accountRoute = require("./account.route");
+const gateRoute = require("./gate.route");
+const historyRoute = require("./history.route");
 
 const router = express.Router();
 
@@ -27,6 +28,10 @@ const defaultRoutes = [
   {
     path: "/gate",
     route: gateRoute,
+  },
+  {
+    path: "/history",
+    route: historyRoute,
   },
 ];
 
