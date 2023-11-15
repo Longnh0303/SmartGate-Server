@@ -7,14 +7,14 @@ const { getIO } = require("./socket.service");
 const checkCardAndPayment = async (body) => {
   const io = getIO();
 
-  const { cardId } = body;
+  const { cardId,macAddress } = body;
   const rfid = await rfidService.getRfidByCardId(cardId);
   if (!rfid) {
     const dataMsg = {
       type: "error",
       data: { message: "Thẻ không tồn tại trong hệ thống" },
     };
-    io.to("realtime-room").emit("mqttMessage", dataMsg);
+    io.to(`${macAddress}_status`).emit("device_status", dataMsg);
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       "Thẻ không tồn tại trong hệ thống"
@@ -37,7 +37,7 @@ const checkCardAndPayment = async (body) => {
       name: rfid.name,
       role: rfid.role,
     });
-    io.to("realtime-room").emit("mqttMessage", dataMsg);
+    io.to(`${macAddress}_status`).emit("device_status", dataMsg);
     return history;
   } else {
     // Nếu có rồi tức là xe đang đi ra khỏi trường => Cần tính tiền
@@ -47,7 +47,7 @@ const checkCardAndPayment = async (body) => {
         type: "error",
         data: { message: "Số dư không đủ để thanh toán" },
       };
-      io.to("realtime-room").emit("mqttMessage", dataMsg);
+      io.to(`${macAddress}_status`).emit("device_status", dataMsg);
       throw new ApiError(
         httpStatus.BAD_REQUEST,
         "Số dư không đủ để thanh toán"
@@ -59,9 +59,9 @@ const checkCardAndPayment = async (body) => {
       const newBalance = rfid.balance - cost;
       rfid.balance = newBalance;
       history.new_balance = newBalance;
-      io.to("realtime-room").emit("mqttMessage", dataMsg);
+      io.to(`${macAddress}_status`).emit("device_status", dataMsg);
     } else {
-      io.to("realtime-room").emit("mqttMessage", dataMsg);
+      io.to(`${macAddress}_status`).emit("device_status", dataMsg);
       history.new_balance = rfid.balance;
     }
 
