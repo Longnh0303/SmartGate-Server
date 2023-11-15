@@ -47,9 +47,14 @@ const updateDeviceById = async (id, updateBody) => {
   return device;
 };
 
+const findDeviceByMac = async (mac) => {
+  return await Device.findOne({ mac });
+};
+
 module.exports = {
   createDevice,
   getDevices,
   deleteDeviceById,
   updateDeviceById,
+  findDeviceByMac
 };
