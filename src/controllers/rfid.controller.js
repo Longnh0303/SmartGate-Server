@@ -49,10 +49,18 @@ const deleteRfid = catchAsync(async (req, res) => {
   res.send(rfid);
 });
 
+//Get rfid by card Id
+const getRfidByCardId = catchAsync(async (req, res) => {
+  const { cardId } = req.params;
+  const rfid = await rfidService.getRfidByCardId(cardId);
+  res.send(rfid);
+});
+
 module.exports = {
   createRfid,
   getRfids,
   getRfidByID,
   updateRfid,
   deleteRfid,
+  getRfidByCardId,
 };

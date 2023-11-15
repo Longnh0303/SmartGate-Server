@@ -15,4 +15,6 @@ router
   .patch(rfidController.updateRfid)
   .delete(rfidController.deleteRfid);
 
+router.route("/card/:cardId").get(rfidController.getRfidByCardId);
+
 module.exports = router;

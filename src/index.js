@@ -3,7 +3,8 @@ const app = require("./app");
 const config = require("./config/config");
 const logger = require("./config/logger");
 const { userService } = require("./services");
-const socketService = require('./services/socket.service');
+const socketService = require("./services/socket.service");
+const mqttService = require("./services/mqtt.service");
 
 let server;
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
@@ -12,6 +13,7 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
     logger.info(`Server started on port ${config.port}`);
     await userService.createAdmin();
     socketService.initSocketHandler(server);
+    mqttService.initMQTTHandler();
   });
 });
 

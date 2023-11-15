@@ -1,11 +1,15 @@
 const socketIO = require("socket.io");
 const logger = require("../config/logger");
+const corsOptions = require("../config/cors");
 
 let io;
 
 const initSocketHandler = (httpServer) => {
   try {
-    io = socketIO(httpServer);
+    io = socketIO(httpServer, {
+      cors: corsOptions,
+      allowEIO3: true,
+    });
     logger.info("Socket.io initialized");
 
     io.on("connection", (socket) => {
@@ -33,7 +37,16 @@ const getIO = () => {
   return io;
 };
 
+const sendMessageToRoom = (roomName, message) => {
+  try {
+    io.to(roomName).emit("mqttMessage", message);
+  } catch (error) {
+    logger.error(`Error sending message to room ${roomName}: ${error.message}`);
+  }
+};
+
 module.exports = {
   initSocketHandler,
   getIO,
+  sendMessageToRoom,
 };
