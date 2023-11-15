@@ -4,3 +4,4 @@ module.exports.accountController = require("./account.controller");
 module.exports.gateController = require("./gate.controller");
 module.exports.rfidController = require("./rfid.controller");
 module.exports.historyController = require("./history.controller");
+module.exports.deviceController = require("./device.controller");

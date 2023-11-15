@@ -4,7 +4,7 @@ const { sendMessageToRoom } = require("./socket.service");
 
 const initMQTTHandler = () => {
   const mqttBroker = "172.20.10.3";
-  const mqttTopic = "test";
+  const mqttTopic = "status";
   const mqttUsername = "longnh";
   const mqttPassword = "1";
 
@@ -32,6 +32,7 @@ const initMQTTHandler = () => {
       type: "gate",
       data: { topic, message: message.toString() },
     };
+    // TODO:
     sendMessageToRoom("realtime-room", dataMsg);
   });
   client.on("close", () => {
