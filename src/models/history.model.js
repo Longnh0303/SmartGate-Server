@@ -6,6 +6,12 @@ const HistorySchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  gateIn: {
+    type: String,
+  },
+  gateOut: {
+    type: String,
+  },
   name: {
     type: String,
   },

@@ -4,7 +4,7 @@ const { sendMessageToRoom } = require("./socket.service");
 const { findDeviceByMac, createDevice } = require("../services/device.service");
 
 const initMQTTHandler = () => {
-  const mqttBroker = "192.168.33.103";
+  const mqttBroker = "192.168.68.103";
   const mqttTopic = "status";
   const mqttUsername = "longnh";
   const mqttPassword = "1";
@@ -28,29 +28,28 @@ const initMQTTHandler = () => {
   });
 
   client.on("message", async (topic, message) => {
- // Chuyển đổi chuỗi JSON thành đối tượng JavaScript
-  const messageObject = JSON.parse(message.toString());
+    // Chuyển đổi chuỗi JSON thành đối tượng JavaScript
+    const messageObject = JSON.parse(message.toString());
 
-  // Lấy giá trị của mac từ đối tượng messageObject
-  const mac = messageObject.mac;
-  // Kiểm tra xem thiết bị đã tồn tại hay chưa
-  const existingDevice = await findDeviceByMac(mac);
-  if (existingDevice) {
-    // Thiết bị đã tồn tại
-        // Gửi tin nhắn MQTT vào phòng Socket.io
-        const dataMsg = {
-          type: "gate",
-          data: { topic, message: message.toString() },
-        };
-        const room = `${existingDevice.mac}_status`
-        // TODO:
-        sendMessageToRoom(room, dataMsg);
-  } else{
-    // Thiết bị chưa tồn tại, tạo mới
-    await createDevice({mac:mac});
-    logger.info(`Created new device with MAC ${mac}`);
-  }
-
+    // Lấy giá trị của mac từ đối tượng messageObject
+    const mac = messageObject.mac;
+    // Kiểm tra xem thiết bị đã tồn tại hay chưa
+    const existingDevice = await findDeviceByMac(mac);
+    if (existingDevice) {
+      // Thiết bị đã tồn tại
+      // Gửi tin nhắn MQTT vào phòng Socket.io
+      const dataMsg = {
+        type: "gate",
+        data: { topic, message: message.toString() },
+      };
+      const room = `${existingDevice.mac}_status`;
+      // TODO:
+      sendMessageToRoom(room, dataMsg);
+    } else {
+      // Thiết bị chưa tồn tại, tạo mới
+      await createDevice({ mac: mac });
+      logger.info(`Created new device with MAC ${mac}`);
+    }
   });
   client.on("close", () => {
     logger.info("Disconnected from MQTT broker");

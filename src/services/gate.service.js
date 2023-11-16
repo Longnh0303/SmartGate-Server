@@ -7,7 +7,7 @@ const { getIO } = require("./socket.service");
 const checkCardAndPayment = async (body) => {
   const io = getIO();
 
-  const { cardId,macAddress } = body;
+  const { cardId, macAddress } = body;
   const rfid = await rfidService.getRfidByCardId(cardId);
   if (!rfid) {
     const dataMsg = {
@@ -36,6 +36,7 @@ const checkCardAndPayment = async (body) => {
       old_balance: rfid.balance,
       name: rfid.name,
       role: rfid.role,
+      gateIn: macAddress,
     });
     io.to(`${macAddress}_status`).emit("device_status", dataMsg);
     return history;
@@ -68,7 +69,7 @@ const checkCardAndPayment = async (body) => {
     // Cập nhật thời gian check out và trạng thái hoàn thành
     history.time_check_out = Date.now();
     history.done = true;
-
+    history.gateOut = macAddress;
     // Lưu lại thông tin thẻ và lịch sử
     await rfid.save();
     await history.save();

@@ -18,6 +18,10 @@ const initSocketHandler = (httpServer) => {
         joinRoom(socket, roomName);
       });
 
+      // Listener cho sự kiện client yêu cầu thoát khỏi room
+      socket.on("request-leave-room", (roomName) => {
+        leaveRoom(socket, roomName);
+      });
     });
 
     io.on("error", (error) => {
@@ -51,9 +55,15 @@ const joinRoom = (socket, roomName) => {
   socket.join(roomName);
 };
 
+// Hàm để rời khỏi room với roomName
+const leaveRoom = (socket, roomName) => {
+  socket.leave(roomName);
+};
+
 module.exports = {
   initSocketHandler,
   getIO,
   sendMessageToRoom,
   joinRoom,
+  leaveRoom,
 };
