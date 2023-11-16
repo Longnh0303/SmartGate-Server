@@ -4,8 +4,14 @@ const authorize = require("../middlewares/authorize");
 const verifyToken = require("../middlewares/verifyToken");
 const { rfidController } = require("../controllers");
 
-// Middleware that applies to all routes
-router.use(verifyToken, authorize(["manager"]));
+// Middleware that applies to all routes except GET
+router.use((req, res, next) => {
+  if (req.method !== 'GET') {
+    authorize(["manager"])(req, res, next);
+  } else {
+    next();
+  }
+});
 
 router.route("/").get(rfidController.getRfids).post(rfidController.createRfid);
 
