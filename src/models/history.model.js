@@ -30,6 +30,10 @@ const HistorySchema = mongoose.Schema({
   time_check_out: {
     type: Date,
   },
+  fee: {
+    type: String,
+    default: 0,
+  },
   done: {
     type: Boolean,
     default: false,

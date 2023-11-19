@@ -43,7 +43,14 @@ const checkCardAndPayment = async (body) => {
   } else {
     // Nếu có rồi tức là xe đang đi ra khỏi trường => Cần tính tiền
     const cost = 3000; // VND
-    if (rfid.role === "student" && rfid.balance < cost) {
+    const millisecondsInADay = 1000 * 60 * 60 * 24;
+    const daysCheckedIn = Math.ceil(
+      (Date.now() - history.time_check_in) / millisecondsInADay
+    );
+    // Tính phí dựa trên cost và số ngày đã check-in
+    const fee = cost * daysCheckedIn;
+
+    if (rfid.role === "student" && rfid.balance < fee) {
       const dataMsg = {
         type: "error",
         data: { message: "Số dư không đủ để thanh toán" },
@@ -56,8 +63,8 @@ const checkCardAndPayment = async (body) => {
     }
 
     // Tính toán tiền và lưu lại ở thông tin thẻ và ở lịch sử
-    if (rfid.role === "student" && rfid.balance >= cost) {
-      const newBalance = rfid.balance - cost;
+    if (rfid.role === "student" && rfid.balance >= fee) {
+      const newBalance = rfid.balance - fee;
       rfid.balance = newBalance;
       history.new_balance = newBalance;
       io.to(`${macAddress}_status`).emit("device_status", dataMsg);
@@ -65,6 +72,9 @@ const checkCardAndPayment = async (body) => {
       io.to(`${macAddress}_status`).emit("device_status", dataMsg);
       history.new_balance = rfid.balance;
     }
+
+    // Lưu giá trị phí vào history
+    history.fee = fee;
 
     // Cập nhật thời gian check out và trạng thái hoàn thành
     history.time_check_out = Date.now();

@@ -5,3 +5,4 @@ module.exports.rfidService = require("./rfid.service");
 module.exports.gateService = require("./gate.service");
 module.exports.historyService = require("./history.service");
 module.exports.deviceService = require("./device.service");
+module.exports.statisticService = require("./statistic.service");

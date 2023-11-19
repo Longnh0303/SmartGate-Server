@@ -6,6 +6,7 @@ const accountRoute = require("./account.route");
 const gateRoute = require("./gate.route");
 const historyRoute = require("./history.route");
 const deviceRoute = require("./device.route");
+const statisticRoute = require("./statistic.route");
 
 const router = express.Router();
 
@@ -37,6 +38,10 @@ const defaultRoutes = [
   {
     path: "/device",
     route: deviceRoute,
+  },
+  {
+    path: "/statistic",
+    route: statisticRoute,
   },
 ];
 
