@@ -4,10 +4,7 @@ const { Rfid } = require("../models");
 
 const createRfid = async (rfidBody) => {
   if (await Rfid.isCardIdExisted(rfidBody.cardId)) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Thẻ đã tồn tại"
-    );
+    throw new ApiError(httpStatus.BAD_REQUEST, "Thẻ đã tồn tại");
   }
   return Rfid.create(rfidBody);
 };

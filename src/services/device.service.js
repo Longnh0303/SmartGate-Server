@@ -56,5 +56,5 @@ module.exports = {
   getDevices,
   deleteDeviceById,
   updateDeviceById,
-  findDeviceByMac
+  findDeviceByMac,
 };

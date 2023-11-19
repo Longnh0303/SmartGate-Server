@@ -39,7 +39,7 @@ const RfidSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 RfidSchema.statics.isCardIdExisted = async function (cardId, excludeCardId) {

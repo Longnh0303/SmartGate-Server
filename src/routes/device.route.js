@@ -8,25 +8,23 @@ router.post(
   "/",
   verifyToken,
   authorize(["manager"]),
-  deviceController.createDevice
+  deviceController.createDevice,
 );
 
 router.get("/", verifyToken, deviceController.getDevices);
-
 
 router.patch(
   "/:id",
   verifyToken,
   authorize(["manager"]),
-  deviceController.updateDevice
+  deviceController.updateDevice,
 );
-
 
 router.delete(
   "/:id",
   verifyToken,
   authorize(["manager"]),
-  deviceController.deleteDevice
+  deviceController.deleteDevice,
 );
 
 module.exports = router;

@@ -31,7 +31,7 @@ const HistorySchema = mongoose.Schema({
     type: Date,
   },
   fee: {
-    type: String,
+    type: Number,
     default: 0,
   },
   done: {

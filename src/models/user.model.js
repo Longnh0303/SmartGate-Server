@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const { toJSON } = require('./plugins');
-const validator = require('validator');
+const { toJSON } = require("./plugins");
+const validator = require("validator");
 
 const UserSchema = mongoose.Schema(
   {
@@ -18,7 +18,7 @@ const UserSchema = mongoose.Schema(
       lowercase: true,
       validate(value) {
         if (!validator.isEmail(value)) {
-          throw new Error('Email không hợp lệ');
+          throw new Error("Email không hợp lệ");
         }
       },
     },
@@ -38,7 +38,7 @@ const UserSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 UserSchema.statics.isEmailTaken = async function (email, excludeUserId) {
@@ -56,9 +56,9 @@ UserSchema.methods.isPasswordMatch = async function (password) {
   return bcrypt.compare(password, user.password);
 };
 
-UserSchema.pre('save', async function (next) {
+UserSchema.pre("save", async function (next) {
   const user = this;
-  if (user.isModified('password')) {
+  if (user.isModified("password")) {
     user.password = await bcrypt.hash(user.password, 8);
   }
   next();

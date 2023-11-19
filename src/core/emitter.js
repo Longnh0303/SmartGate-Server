@@ -1,4 +1,4 @@
-const EventEmitter = require('events');
+const EventEmitter = require("events");
 
 class GlobEmiiter extends EventEmitter {
   // eslint-disable-next-line no-useless-constructor

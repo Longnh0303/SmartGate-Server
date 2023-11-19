@@ -14,7 +14,7 @@ const deviceSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 deviceSchema.statics.isDeviceExisted = async function (mac, excludeMac) {

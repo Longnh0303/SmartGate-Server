@@ -1,22 +1,31 @@
-const dotenv = require('dotenv');
-const path = require('path');
-const Joi = require('joi');
+const dotenv = require("dotenv");
+const path = require("path");
+const Joi = require("joi");
 
-dotenv.config({ path: path.join(__dirname, '../../.env') });
+dotenv.config({ path: path.join(__dirname, "../../.env") });
 
 const envVarsSchema = Joi.object()
   .keys({
-    NODE_ENV: Joi.string().valid('production', 'development').required(),
+    NODE_ENV: Joi.string().valid("production", "development").required(),
     PORT: Joi.number().default(5000),
-    DB_URI: Joi.string().required().description('Mongo DB url'),
-    JWT_SECRET: Joi.string().required().description('JWT secret key'),
-    JWT_ACCESS_EXPIRATION_DAY: Joi.number().required().description('JWT access expiration key'),
-    ADMIN_PASSWORD: Joi.string().required().description('admin password for first time setup'),
-    ADMIN_EMAIL: Joi.string().required().email().description('admin email for first time setup'),
+    DB_URI: Joi.string().required().description("Mongo DB url"),
+    JWT_SECRET: Joi.string().required().description("JWT secret key"),
+    JWT_ACCESS_EXPIRATION_DAY: Joi.number()
+      .required()
+      .description("JWT access expiration key"),
+    ADMIN_PASSWORD: Joi.string()
+      .required()
+      .description("admin password for first time setup"),
+    ADMIN_EMAIL: Joi.string()
+      .required()
+      .email()
+      .description("admin email for first time setup"),
   })
   .unknown();
 
-const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
+const { value: envVars, error } = envVarsSchema
+  .prefs({ errors: { label: "key" } })
+  .validate(process.env);
 
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
@@ -35,13 +44,13 @@ module.exports = {
   },
   jwt: {
     secret: envVars.JWT_SECRET,
-    accessExpiration: envVars.JWT_ACCESS_EXPIRATION_DAY
+    accessExpiration: envVars.JWT_ACCESS_EXPIRATION_DAY,
   },
   admin: {
     email: envVars.ADMIN_EMAIL,
     password: envVars.ADMIN_PASSWORD,
-    username: 'Administrator',
-    role: 'manager',
-    phone: '0912345678',
+    username: "Administrator",
+    role: "manager",
+    phone: "0912345678",
   },
 };

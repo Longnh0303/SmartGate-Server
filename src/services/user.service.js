@@ -2,7 +2,7 @@ const httpStatus = require("http-status");
 const { User } = require("../models");
 const ApiError = require("../utils/ApiError");
 const logger = require("../config/logger");
-const configs = require('../config/config');
+const configs = require("../config/config");
 
 const createUser = async (userBody) => {
   if (await User.isEmailTaken(userBody.email)) {

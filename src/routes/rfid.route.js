@@ -5,24 +5,19 @@ const authorize = require("../middlewares/authorize");
 const verifyToken = require("../middlewares/verifyToken");
 
 router.post(
-    "/",
-    verifyToken,
-    authorize(["manager"]),
-    rfidController.createRfid
-  );
-
-
-router.get(
-  "/card/:cardId",
+  "/",
   verifyToken,
-  rfidController.getRfidByCardId
+  authorize(["manager"]),
+  rfidController.createRfid,
 );
+
+router.get("/card/:cardId", verifyToken, rfidController.getRfidByCardId);
 
 router.patch(
   "/:id",
   verifyToken,
   authorize(["manager"]),
-  rfidController.updateRfid
+  rfidController.updateRfid,
 );
 
 router.get("/", verifyToken, authorize(["manager"]), rfidController.getRfids);
@@ -31,7 +26,7 @@ router.delete(
   "/:id",
   verifyToken,
   authorize(["manager"]),
-  rfidController.deleteRfid
+  rfidController.deleteRfid,
 );
 
 module.exports = router;
