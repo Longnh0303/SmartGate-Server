@@ -10,6 +10,7 @@ const { authLimiter } = require("./middlewares/rateLimiter");
 const routes = require("./routes");
 const { errorConverter, errorHandler } = require("./middlewares/error");
 const ApiError = require("./utils/ApiError");
+const corsOptions = require('./config/cors');
 
 const app = express();
 
@@ -30,8 +31,8 @@ app.use(mongoSanitize());
 app.use(compression());
 
 // enable cors
-app.use(cors());
-app.options("*", cors());
+app.use(cors(corsOptions));
+
 
 // limit repeated failed requests to auth endpoints
 if (config.env === "production") {

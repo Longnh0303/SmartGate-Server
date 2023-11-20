@@ -1,0 +1,193 @@
+2023-11-13 17:33 +07:00: info: MongoDB connected
+2023-11-13 17:33 +07:00: info: Server started on port 5000
+2023-11-13 17:33 +07:00: info: MongoDB connected
+2023-11-13 17:33 +07:00: info: Server started on port 5000
+2023-11-13 17:33 +07:00: info: Created account admin@gmail.com
+2023-11-13 17:33 +07:00: info: Created account admin@gmail.com
+2023-11-13 17:33 +07:00: info: Socket.io initialized
+2023-11-13 17:33 +07:00: info: Server closed
+2023-11-13 17:34 +07:00: info: MongoDB connected
+2023-11-13 17:34 +07:00: info: Server started on port 5000
+2023-11-13 17:34 +07:00: info: Existed account admin@gmail.com
+2023-11-13 17:34 +07:00: info: Socket.io initialized
+2023-11-14 16:41 +07:00: info: MongoDB connected
+2023-11-14 16:41 +07:00: info: Server started on port 5000
+2023-11-14 16:41 +07:00: info: Existed account admin@gmail.com
+2023-11-14 16:41 +07:00: info: Socket.io initialized
+2023-11-14 16:41 +07:00: info: MongoDB connected
+2023-11-14 16:41 +07:00: info: Server started on port 5000
+2023-11-14 16:41 +07:00: info: Existed account admin@gmail.com
+2023-11-14 16:41 +07:00: info: Socket.io initialized
+2023-11-20 17:20 +07:00: info: MongoDB connected
+2023-11-20 17:20 +07:00: info: Server started on port 5000
+2023-11-20 17:20 +07:00: info: MongoDB connected
+2023-11-20 17:20 +07:00: info: Server started on port 5000
+2023-11-20 17:20 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:20 +07:00: info: Socket.io initialized
+2023-11-20 17:20 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:20 +07:00: info: Socket.io initialized
+2023-11-20 17:23 +07:00: info: MongoDB connected
+2023-11-20 17:23 +07:00: info: Server started on port 5000
+2023-11-20 17:23 +07:00: info: MongoDB connected
+2023-11-20 17:23 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:23 +07:00: info: Server started on port 5000
+2023-11-20 17:23 +07:00: info: Socket.io initialized
+2023-11-20 17:23 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:23 +07:00: info: Socket.io initialized
+2023-11-20 17:31 +07:00: info: MongoDB connected
+2023-11-20 17:31 +07:00: info: Server started on port 5000
+2023-11-20 17:31 +07:00: info: MongoDB connected
+2023-11-20 17:31 +07:00: info: Server started on port 5000
+2023-11-20 17:31 +07:00: info: Created account admin@gmail.com
+2023-11-20 17:31 +07:00: info: Created account admin@gmail.com
+2023-11-20 17:31 +07:00: info: Socket.io initialized
+2023-11-20 17:31 +07:00: info: Server closed
+2023-11-20 17:31 +07:00: info: MongoDB connected
+2023-11-20 17:31 +07:00: info: Server started on port 5000
+2023-11-20 17:31 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:31 +07:00: info: Socket.io initialized
+2023-11-20 17:50 +07:00: info: MongoDB connected
+2023-11-20 17:50 +07:00: info: MongoDB connected
+2023-11-20 17:50 +07:00: info: Server started on port 5000
+2023-11-20 17:50 +07:00: info: Server started on port 5000
+2023-11-20 17:50 +07:00: info: Created account admin@gmail.com
+2023-11-20 17:50 +07:00: info: Created account admin@gmail.com
+2023-11-20 17:50 +07:00: info: Socket.io initialized
+2023-11-20 17:50 +07:00: info: Server closed
+2023-11-20 17:50 +07:00: info: Connected to MQTT broker
+2023-11-20 17:50 +07:00: info: Subscribed to topic status
+2023-11-20 17:50 +07:00: info: Created new device with MAC 24:dc:c3:a7:3a:78
+2023-11-20 17:50 +07:00: info: MongoDB connected
+2023-11-20 17:50 +07:00: info: Server started on port 5000
+2023-11-20 17:50 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:50 +07:00: info: Socket.io initialized
+2023-11-20 17:50 +07:00: info: Connected to MQTT broker
+2023-11-20 17:50 +07:00: info: Subscribed to topic status
+2023-11-20 17:51 +07:00: info: Created new device with MAC 30:c6:f7:43:37:f8
+2023-11-20 17:51 +07:00: info: Server closed
+2023-11-20 17:51 +07:00: info: MongoDB connected
+2023-11-20 17:51 +07:00: info: Server started on port 5000
+2023-11-20 17:51 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:51 +07:00: info: Socket.io initialized
+2023-11-20 17:51 +07:00: info: Connected to MQTT broker
+2023-11-20 17:51 +07:00: info: Subscribed to topic status
+2023-11-20 17:52 +07:00: info: MongoDB connected
+2023-11-20 17:52 +07:00: info: Server started on port 5000
+2023-11-20 17:52 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:52 +07:00: info: Socket.io initialized
+2023-11-20 17:52 +07:00: info: Connected to MQTT broker
+2023-11-20 17:52 +07:00: info: Subscribed to topic status
+2023-11-20 17:52 +07:00: info: MongoDB connected
+2023-11-20 17:52 +07:00: info: Server started on port 5000
+2023-11-20 17:52 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:52 +07:00: info: Socket.io initialized
+2023-11-20 17:52 +07:00: info: Connected to MQTT broker
+2023-11-20 17:52 +07:00: info: Subscribed to topic status
+2023-11-20 17:53 +07:00: info: MongoDB connected
+2023-11-20 17:53 +07:00: info: Server started on port 5000
+2023-11-20 17:53 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:53 +07:00: info: Socket.io initialized
+2023-11-20 17:53 +07:00: info: Connected to MQTT broker
+2023-11-20 17:53 +07:00: info: Subscribed to topic status
+2023-11-20 17:53 +07:00: info: MongoDB connected
+2023-11-20 17:53 +07:00: info: Server started on port 5000
+2023-11-20 17:53 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:53 +07:00: info: Socket.io initialized
+2023-11-20 17:53 +07:00: info: Connected to MQTT broker
+2023-11-20 17:53 +07:00: info: Subscribed to topic status
+2023-11-20 17:55 +07:00: info: MongoDB connected
+2023-11-20 17:55 +07:00: info: Server started on port 5000
+2023-11-20 17:55 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:55 +07:00: info: MongoDB connected
+2023-11-20 17:55 +07:00: info: Socket.io initialized
+2023-11-20 17:55 +07:00: info: Server started on port 5000
+2023-11-20 17:55 +07:00: info: Connected to MQTT broker
+2023-11-20 17:55 +07:00: info: Subscribed to topic status
+2023-11-20 17:55 +07:00: info: Existed account admin@gmail.com
+2023-11-20 17:55 +07:00: info: Socket.io initialized
+2023-11-20 17:55 +07:00: info: Connected to MQTT broker
+2023-11-20 17:55 +07:00: info: Subscribed to topic status
+2023-11-20 18:02 +07:00: info: MongoDB connected
+2023-11-20 18:02 +07:00: info: Server started on port 5000
+2023-11-20 18:02 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:02 +07:00: info: Socket.io initialized
+2023-11-20 18:02 +07:00: info: Connected to MQTT broker
+2023-11-20 18:02 +07:00: info: Subscribed to topic status
+2023-11-20 18:02 +07:00: info: MongoDB connected
+2023-11-20 18:02 +07:00: info: Server started on port 5000
+2023-11-20 18:02 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:02 +07:00: info: Socket.io initialized
+2023-11-20 18:02 +07:00: info: Connected to MQTT broker
+2023-11-20 18:02 +07:00: info: Subscribed to topic status
+2023-11-20 18:02 +07:00: info: MongoDB connected
+2023-11-20 18:02 +07:00: info: Server started on port 5000
+2023-11-20 18:02 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:02 +07:00: info: Socket.io initialized
+2023-11-20 18:02 +07:00: info: Connected to MQTT broker
+2023-11-20 18:02 +07:00: info: Subscribed to topic status
+2023-11-20 18:02 +07:00: info: MongoDB connected
+2023-11-20 18:02 +07:00: info: Server started on port 5000
+2023-11-20 18:02 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:02 +07:00: info: Socket.io initialized
+2023-11-20 18:02 +07:00: info: Connected to MQTT broker
+2023-11-20 18:02 +07:00: info: Subscribed to topic status
+2023-11-20 18:03 +07:00: info: MongoDB connected
+2023-11-20 18:03 +07:00: info: Server started on port 5000
+2023-11-20 18:03 +07:00: info: MongoDB connected
+2023-11-20 18:03 +07:00: info: Server started on port 5000
+2023-11-20 18:03 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:03 +07:00: info: Socket.io initialized
+2023-11-20 18:03 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:03 +07:00: info: Connected to MQTT broker
+2023-11-20 18:03 +07:00: info: Subscribed to topic status
+2023-11-20 18:03 +07:00: info: Socket.io initialized
+2023-11-20 18:03 +07:00: info: Connected to MQTT broker
+2023-11-20 18:03 +07:00: info: Subscribed to topic status
+2023-11-20 18:05 +07:00: info: MongoDB connected
+2023-11-20 18:05 +07:00: info: Server started on port 5000
+2023-11-20 18:05 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:05 +07:00: info: Socket.io initialized
+2023-11-20 18:05 +07:00: info: Connected to MQTT broker
+2023-11-20 18:05 +07:00: info: Subscribed to topic status
+2023-11-20 18:05 +07:00: info: MongoDB connected
+2023-11-20 18:05 +07:00: info: Server started on port 5000
+2023-11-20 18:05 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:05 +07:00: info: Socket.io initialized
+2023-11-20 18:05 +07:00: info: Connected to MQTT broker
+2023-11-20 18:05 +07:00: info: Subscribed to topic status
+2023-11-20 18:06 +07:00: info: MongoDB connected
+2023-11-20 18:06 +07:00: info: Server started on port 5000
+2023-11-20 18:06 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:06 +07:00: info: Socket.io initialized
+2023-11-20 18:06 +07:00: info: Connected to MQTT broker
+2023-11-20 18:06 +07:00: info: Subscribed to topic status
+2023-11-20 18:06 +07:00: info: MongoDB connected
+2023-11-20 18:06 +07:00: info: Server started on port 5000
+2023-11-20 18:06 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:06 +07:00: info: Socket.io initialized
+2023-11-20 18:06 +07:00: info: Connected to MQTT broker
+2023-11-20 18:06 +07:00: info: Subscribed to topic status
+2023-11-20 18:12 +07:00: info: MongoDB connected
+2023-11-20 18:12 +07:00: info: Server started on port 5000
+2023-11-20 18:12 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:12 +07:00: info: Socket.io initialized
+2023-11-20 18:12 +07:00: info: MongoDB connected
+2023-11-20 18:12 +07:00: info: Server started on port 5000
+2023-11-20 18:12 +07:00: info: Connected to MQTT broker
+2023-11-20 18:12 +07:00: info: Subscribed to topic status
+2023-11-20 18:12 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:12 +07:00: info: Socket.io initialized
+2023-11-20 18:12 +07:00: info: Connected to MQTT broker
+2023-11-20 18:12 +07:00: info: Subscribed to topic status
+2023-11-20 18:15 +07:00: info: MongoDB connected
+2023-11-20 18:15 +07:00: info: Server started on port 5000
+2023-11-20 18:15 +07:00: info: MongoDB connected
+2023-11-20 18:15 +07:00: info: Server started on port 5000
+2023-11-20 18:15 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:15 +07:00: info: Socket.io initialized
+2023-11-20 18:15 +07:00: info: Existed account admin@gmail.com
+2023-11-20 18:15 +07:00: info: Connected to MQTT broker
+2023-11-20 18:15 +07:00: info: Subscribed to topic status
+2023-11-20 18:15 +07:00: info: Socket.io initialized
+2023-11-20 18:15 +07:00: info: Connected to MQTT broker
+2023-11-20 18:15 +07:00: info: Subscribed to topic status
