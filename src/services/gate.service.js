@@ -5,91 +5,80 @@ const ApiError = require("../utils/ApiError");
 const { getIO } = require("./socket.service");
 
 const checkCardAndPayment = async (body) => {
-  const io = getIO();
-
   const { cardId, macAddress } = body;
+  const io = getIO();
   const rfid = await rfidService.getRfidByCardId(cardId);
+
   if (!rfid) {
-    const dataMsg = {
-      type: "error",
-      data: { message: "Thẻ không tồn tại trong hệ thống" },
-    };
-    io.to(`${macAddress}_status`).emit("device_status", dataMsg);
+    emitDeviceStatus(
+      io,
+      macAddress,
+      "error",
+      "Thẻ không tồn tại trong hệ thống"
+    );
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       "Thẻ không tồn tại trong hệ thống"
     );
   }
 
-  const history = await History.findOne({ cardId, done: false });
+  let history = await History.findOne({ cardId, done: false });
+  const isNewEntry = !history;
 
-  const dataMsg = {
-    type: "access",
-    data: { cardId: cardId },
-  };
-
-  // Nếu chưa có lịch sử tức là xe đang vào trường => Cần tạo 1 lịch sử
-  if (!history) {
-    const history = await History.create({
-      cardId,
-      time_check_in: Date.now(),
-      old_balance: rfid.balance,
-      name: rfid.name,
-      role: rfid.role,
-      gateIn: macAddress,
-    });
-    io.to(`${macAddress}_status`).emit("device_status", dataMsg);
-    return history;
+  if (isNewEntry) {
+    history = await createNewHistoryEntry(cardId, rfid, macAddress);
   } else {
-    // Nếu có rồi tức là xe đang đi ra khỏi trường => Cần tính tiền
-    const cost = 3000; // VND
-    const millisecondsInADay = 1000 * 60 * 60 * 24;
-    const daysCheckedIn = Math.ceil(
-      (Date.now() - history.time_check_in) / millisecondsInADay
-    );
-    // Tính phí dựa trên cost và số ngày đã check-in
-    const fee = cost * daysCheckedIn;
-
-    if (rfid.role === "student" && rfid.balance < fee) {
-      const dataMsg = {
-        type: "error",
-        data: { message: "Số dư không đủ để thanh toán" },
-      };
-      io.to(`${macAddress}_status`).emit("device_status", dataMsg);
-      throw new ApiError(
-        httpStatus.BAD_REQUEST,
-        "Số dư không đủ để thanh toán"
-      );
-    }
-
-    // Tính toán tiền và lưu lại ở thông tin thẻ và ở lịch sử
-    if (rfid.role === "student" && rfid.balance >= fee) {
-      const newBalance = rfid.balance - fee;
-      rfid.balance = newBalance;
-      history.new_balance = newBalance;
-      // Lưu giá trị phí vào history
-      history.fee = fee;
-      io.to(`${macAddress}_status`).emit("device_status", dataMsg);
-    } else {
-      io.to(`${macAddress}_status`).emit("device_status", dataMsg);
-      history.new_balance = rfid.balance;
-    }
-
-    // Tính phí với role guest
-    if (rfid.role === "guest") {
-      history.fee = cost;
-    }
-
-    // Cập nhật thời gian check out và trạng thái hoàn thành
-    history.time_check_out = Date.now();
-    history.done = true;
-    history.gateOut = macAddress;
-    // Lưu lại thông tin thẻ và lịch sử
-    await rfid.save();
-    await history.save();
-
-    return history;
+    await updateHistoryEntry(history, rfid, macAddress);
   }
+
+  emitDeviceStatus(io, macAddress, "access", { cardId: cardId });
+  return history;
+};
+
+const emitDeviceStatus = (io, macAddress, type, message) => {
+  const dataMsg = { type, data: { message } };
+  io.to(`${macAddress}_status`).emit("device_status", dataMsg);
+};
+
+const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
+  return await History.create({
+    cardId,
+    time_check_in: Date.now(),
+    old_balance: rfid.balance,
+    name: rfid.name,
+    role: rfid.role,
+    gateIn: macAddress,
+  });
+};
+
+const updateHistoryEntry = async (history, rfid, macAddress) => {
+  const cost = 3000; // VND
+  const millisecondsInADay = 1000 * 60 * 60 * 24;
+  const daysCheckedIn = Math.ceil(
+    (Date.now() - history.time_check_in) / millisecondsInADay
+  );
+  const fee = cost * daysCheckedIn;
+
+  if (rfid.role === "student" && rfid.balance < fee) {
+    emitDeviceStatus(io, macAddress, "error", "Số dư không đủ để thanh toán");
+    throw new ApiError(httpStatus.BAD_REQUEST, "Số dư không đủ để thanh toán");
+  }
+
+  if (rfid.role === "student" && rfid.balance >= fee) {
+    rfid.balance -= fee;
+    history.new_balance = rfid.balance;
+    history.fee = fee;
+  } else if (rfid.role === "guest") {
+    history.fee = cost;
+    history.new_balance = rfid.balance;
+  }
+
+  history.time_check_out = Date.now();
+  history.done = true;
+  history.gateOut = macAddress;
+
+  await rfid.save();
+  await history.save();
 };
 
 module.exports = {

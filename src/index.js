@@ -13,7 +13,7 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
     logger.info(`Server started on port ${config.port}`);
     await userService.createAdmin();
     socketService.initSocketHandler(server);
-    mqttService.initMQTTHandler();
+    // mqttService.initMQTTHandler();
   });
 });
 
