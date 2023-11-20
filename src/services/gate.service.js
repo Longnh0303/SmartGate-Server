@@ -21,6 +21,8 @@ const checkCardAndPayment = async (body) => {
       httpStatus.BAD_REQUEST,
       "Thẻ không tồn tại trong hệ thống"
     );
+  } else {
+    emitDeviceStatus(io, macAddress, "access", { cardId: cardId });
   }
 
   let history = await History.findOne({ cardId, done: false });
@@ -28,18 +30,17 @@ const checkCardAndPayment = async (body) => {
 
   if (isNewEntry) {
     history = await createNewHistoryEntry(cardId, rfid, macAddress);
-  } else {    
+  } else {
     await updateHistoryEntry(history, rfid, macAddress);
   }
 
-  emitDeviceStatus(io, macAddress, "access", { cardId: cardId });
   return history;
 };
 
 const emitDeviceStatus = (io, macAddress, type, message) => {
   const dataMsg = { type, data: { message } };
   io.to(`${macAddress}_status`).emit("device_status", dataMsg);
-  logger.info(`Đã emit tới ${macAddress}_status rồi nhé bạn ơi!`)
+  logger.info(`Đã emit tới ${macAddress}_status rồi nhé bạn ơi!`);
 };
 
 const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
