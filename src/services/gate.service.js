@@ -3,6 +3,7 @@ const rfidService = require("./rfid.service");
 const { History } = require("../models");
 const ApiError = require("../utils/ApiError");
 const { getIO } = require("./socket.service");
+const logger = require("../config/logger");
 
 const checkCardAndPayment = async (body) => {
   const { cardId, macAddress } = body;
@@ -27,7 +28,7 @@ const checkCardAndPayment = async (body) => {
 
   if (isNewEntry) {
     history = await createNewHistoryEntry(cardId, rfid, macAddress);
-  } else {
+  } else {    
     await updateHistoryEntry(history, rfid, macAddress);
   }
 
@@ -38,6 +39,7 @@ const checkCardAndPayment = async (body) => {
 const emitDeviceStatus = (io, macAddress, type, message) => {
   const dataMsg = { type, data: { message } };
   io.to(`${macAddress}_status`).emit("device_status", dataMsg);
+  logger.info(`Đã emit tới ${macAddress}_status rồi nhé bạn ơi!`)
 };
 
 const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
