@@ -35,16 +35,17 @@ const initSocketHandler = (httpServer) => {
   }
 };
 
-const getIO = () => {
-  if (!io) {
-    throw new Error("Socket.io not initialized");
-  }
-  return io;
-};
+// const getIO = () => {
+//   if (!io) {
+//     throw new Error("Socket.io not initialized");
+//   }
+//   return io;
+// };
 
 const sendMessageToRoom = (roomName, message) => {
   try {
     io.to(roomName).emit("device_status", message);
+    logger.info("Socket sent message!")
   } catch (error) {
     logger.error(`Error sending message to room ${roomName}: ${error.message}`);
   }
@@ -62,7 +63,6 @@ const leaveRoom = (socket, roomName) => {
 
 module.exports = {
   initSocketHandler,
-  getIO,
   sendMessageToRoom,
   joinRoom,
   leaveRoom,

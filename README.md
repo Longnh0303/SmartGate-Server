@@ -76,9 +76,8 @@ This will start the server with nodemon for auto-reloading on file changes.
 To use socket io:
 
 ```javascript
-const { getIO } = require("./socket.service");
-const io = getIO();
-io.to("name_of_room").emit("name_of_event", data);
+const { sendMessageToRoom } = require("./socket.service");
+sendMessageToRoom("name_of_room", data)
 ```
 
 ## License

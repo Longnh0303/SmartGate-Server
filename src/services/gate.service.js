@@ -2,27 +2,21 @@ const httpStatus = require("http-status");
 const rfidService = require("./rfid.service");
 const { History } = require("../models");
 const ApiError = require("../utils/ApiError");
-const { getIO } = require("./socket.service");
 const logger = require("../config/logger");
+const { sendMessageToRoom } = require("./socket.service");
 
 const checkCardAndPayment = async (body) => {
   const { cardId, macAddress } = body;
-  const io = getIO();
   const rfid = await rfidService.getRfidByCardId(cardId);
 
   if (!rfid) {
-    emitDeviceStatus(
-      io,
-      macAddress,
-      "error",
-      "Thẻ không tồn tại trong hệ thống"
-    );
+    emitDeviceStatus(macAddress, "error", "Thẻ không tồn tại trong hệ thống");
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       "Thẻ không tồn tại trong hệ thống"
     );
   } else {
-    emitDeviceStatus(io, macAddress, "access", { cardId: cardId });
+    emitDeviceStatus(macAddress, "access", { cardId: cardId });
   }
 
   let history = await History.findOne({ cardId, done: false });
@@ -37,10 +31,9 @@ const checkCardAndPayment = async (body) => {
   return history;
 };
 
-const emitDeviceStatus = (io, macAddress, type, message) => {
+const emitDeviceStatus = (macAddress, type, message) => {
   const dataMsg = { type, data: { message } };
-  io.to(`${macAddress}_status`).emit("device_status", dataMsg);
-  logger.info(`Đã emit tới ${macAddress}_status rồi nhé bạn ơi!`);
+  sendMessageToRoom(`${macAddress}_status`, dataMsg);
 };
 
 const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
@@ -63,7 +56,7 @@ const updateHistoryEntry = async (history, rfid, macAddress) => {
   const fee = cost * daysCheckedIn;
 
   if (rfid.role === "student" && rfid.balance < fee) {
-    emitDeviceStatus(io, macAddress, "error", "Số dư không đủ để thanh toán");
+    emitDeviceStatus(macAddress, "error", "Số dư không đủ để thanh toán");
     throw new ApiError(httpStatus.BAD_REQUEST, "Số dư không đủ để thanh toán");
   }
 
