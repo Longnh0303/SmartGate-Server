@@ -33,10 +33,24 @@ const getVehicle = catchAsync(async (req, res, _next) => {
   return res.send(results);
 });
 
+const getColumnChartData = catchAsync(async (req, res, _next) => {
+  const { timeRange } = req.query;
+  const results = await statisticService.getColumnChartData(timeRange);
+  return res.send(results);
+});
+
+const getPieChartData = catchAsync(async (req, res, _next) => {
+  const { timeRange } = req.query;
+  const results = await statisticService.getPieChartData(timeRange);
+  return res.send(results);
+});
+
 module.exports = {
   getAccessStats,
   getTotalMoney,
   getAutoMoney,
   getManualMoney,
   getVehicle,
+  getColumnChartData,
+  getPieChartData,
 };

@@ -13,4 +13,12 @@ router.get("/money/manual", verifyToken, statisticController.getManualMoney);
 
 router.get("/vehicle", verifyToken, statisticController.getVehicle);
 
+router.get(
+  "/chart/column",
+  verifyToken,
+  statisticController.getColumnChartData
+);
+
+router.get("/chart/pie", verifyToken, statisticController.getPieChartData);
+
 module.exports = router;

@@ -17,7 +17,7 @@ const checkCardAndPayment = async (body) => {
     io.to(`${macAddress}_status`).emit("device_status", dataMsg);
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      "Thẻ không tồn tại trong hệ thống",
+      "Thẻ không tồn tại trong hệ thống"
     );
   }
 
@@ -45,7 +45,7 @@ const checkCardAndPayment = async (body) => {
     const cost = 3000; // VND
     const millisecondsInADay = 1000 * 60 * 60 * 24;
     const daysCheckedIn = Math.ceil(
-      (Date.now() - history.time_check_in) / millisecondsInADay,
+      (Date.now() - history.time_check_in) / millisecondsInADay
     );
     // Tính phí dựa trên cost và số ngày đã check-in
     const fee = cost * daysCheckedIn;
@@ -58,7 +58,7 @@ const checkCardAndPayment = async (body) => {
       io.to(`${macAddress}_status`).emit("device_status", dataMsg);
       throw new ApiError(
         httpStatus.BAD_REQUEST,
-        "Số dư không đủ để thanh toán",
+        "Số dư không đủ để thanh toán"
       );
     }
 
@@ -67,14 +67,18 @@ const checkCardAndPayment = async (body) => {
       const newBalance = rfid.balance - fee;
       rfid.balance = newBalance;
       history.new_balance = newBalance;
+      // Lưu giá trị phí vào history
+      history.fee = fee;
       io.to(`${macAddress}_status`).emit("device_status", dataMsg);
     } else {
       io.to(`${macAddress}_status`).emit("device_status", dataMsg);
       history.new_balance = rfid.balance;
     }
 
-    // Lưu giá trị phí vào history
-    history.fee = fee;
+    // Tính phí với role guest
+    if (rfid.role === "guest") {
+      history.fee = cost;
+    }
 
     // Cập nhật thời gian check out và trạng thái hoàn thành
     history.time_check_out = Date.now();

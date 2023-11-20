@@ -1,6 +1,7 @@
 const httpStatus = require("http-status");
 const ApiError = require("../utils/ApiError");
 const { History } = require("../models");
+const { Device } = require("../models");
 const getTimeRange = require("../utils/day");
 
 const getAccessStats = async (timeRange) => {
@@ -37,22 +38,11 @@ const getTotalMoney = async (timeRange) => {
         totalMoney += history.fee;
       }
     });
-
-    const queryGuest = { role: "guest" };
-    if (fromDate && toDate) {
-      queryGuest.time_check_in = { $gte: fromDate, $lte: toDate };
-    }
-
-    const guestHistoriesCount = await History.countDocuments(queryGuest); // Đếm số lượng bản ghi có role = guest
-    const guestMoney = guestHistoriesCount * 3000; // Tính số tiền từ số lượng bản ghi có role = guest
-
-    totalMoney += guestMoney; // Cộng số tiền từ bản ghi có role = guest vào tổng số tiền
-
     return { totalMoney };
   } catch (error) {
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
-      "Lỗi khi lấy tổng số tiền từ dữ liệu",
+      "Lỗi khi lấy tổng số tiền từ dữ liệu"
     );
   }
 };
@@ -82,7 +72,7 @@ const getAutoMoney = async (timeRange) => {
   } catch (error) {
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
-      "Lỗi khi lấy tổng số tiền từ dữ liệu",
+      "Lỗi khi lấy tổng số tiền từ dữ liệu"
     );
   }
 };
@@ -106,7 +96,7 @@ const getManualMoney = async (timeRange) => {
   } catch (error) {
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
-      "Lỗi khi lấy tổng số tiền từ dữ liệu",
+      "Lỗi khi lấy tổng số tiền từ dữ liệu"
     );
   }
 };
@@ -155,8 +145,104 @@ const getVehicle = async (timeRange) => {
   } catch (error) {
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
-      "Lỗi khi lấy số lượng phương tiện từ dữ liệu",
+      "Lỗi khi lấy số lượng phương tiện từ dữ liệu"
     );
+  }
+};
+
+const getColumnChartData = async (timeRange) => {
+  try {
+    const devices = await Device.find({});
+    const { fromDate, toDate } = getTimeRange(timeRange);
+
+    const pieChartData = [];
+
+    for (const device of devices) {
+      const { mac } = device;
+
+      const query = {
+        gateOut: mac,
+      };
+
+      const queryGateOut = {
+        gateOut: mac,
+      };
+      const queryGateIn = {
+        gateIn: mac,
+      };
+
+      if (fromDate && toDate) {
+        query.time_check_in = { $gte: fromDate, $lte: toDate };
+        queryGateOut.time_check_in = { $gte: fromDate, $lte: toDate };
+        queryGateIn.time_check_in = { $gte: fromDate, $lte: toDate };
+      }
+
+      const gateOutCount = await History.countDocuments(queryGateOut);
+      const gateInCount = await History.countDocuments(queryGateIn);
+      const deviceData = await History.find(query);
+
+      const totalRecords = gateOutCount + gateInCount;
+
+      let totalFees = 0;
+
+      // Tính tổng các trường fee
+      deviceData.forEach((record) => {
+        if (record.fee) {
+          totalFees += record.fee;
+        }
+      });
+
+      const deviceObj = {
+        name: mac,
+        data: [totalRecords, totalFees],
+      };
+
+      pieChartData.push(deviceObj);
+    }
+
+    return pieChartData;
+  } catch (error) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Lỗi khi lấy dữ liệu biểu đồ"
+    );
+  }
+};
+
+const getPieChartData = async (timeRange) => {
+  let { fromDate, toDate } = getTimeRange(timeRange);
+
+  let query = {};
+
+  if (fromDate && toDate) {
+    query.time_check_in = { $gte: fromDate, $lte: toDate };
+  }
+
+  try {
+    const getRoleCount = async (role) => {
+      const gateInCount = await History.countDocuments({
+        ...query,
+        role,
+        gateIn: { $exists: true }, // Lọc các bản ghi có gateIn
+      });
+
+      const gateOutCount = await History.countDocuments({
+        ...query,
+        role,
+        gateOut: { $exists: true }, // Lọc các bản ghi có gateOut
+      });
+
+      return gateInCount + gateOutCount;
+    };
+
+    const guestCount = await getRoleCount("guest");
+    const studentCount = await getRoleCount("student");
+    const teacherCount = await getRoleCount("teacher");
+    const employeeCount = await getRoleCount("employee");
+
+    return [guestCount, studentCount, teacherCount, employeeCount];
+  } catch (error) {
+    throw new Error("Lỗi khi lấy số lượng bản ghi từ dữ liệu");
   }
 };
 
@@ -166,4 +252,6 @@ module.exports = {
   getAutoMoney,
   getManualMoney,
   getVehicle,
+  getColumnChartData,
+  getPieChartData,
 };

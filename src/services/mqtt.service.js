@@ -4,7 +4,7 @@ const { sendMessageToRoom } = require("./socket.service");
 const { findDeviceByMac, createDevice } = require("../services/device.service");
 
 const initMQTTHandler = () => {
-  const mqttBroker = "192.168.68.103";
+  const mqttBroker = "172.20.10.3";
   const mqttTopic = "status";
   const mqttUsername = "longnh";
   const mqttPassword = "1";
