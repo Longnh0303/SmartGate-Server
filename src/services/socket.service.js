@@ -42,9 +42,9 @@ const initSocketHandler = (httpServer) => {
 //   return io;
 // };
 
-const sendMessageToRoom = (roomName, message) => {
+const sendMessageToRoom = (roomName, eventName, message) => {
   try {
-    io.to(roomName).emit("device_status", message);
+    io.to(roomName).emit(eventName, message);
   } catch (error) {
     logger.error(`Error sending message to room ${roomName}: ${error.message}`);
   }

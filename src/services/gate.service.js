@@ -7,7 +7,7 @@ const { sendMessageToRoom } = require("./socket.service");
 
 const emitDeviceStatus = (macAddress, type, message) => {
   const dataMsg = { type, data: { message } };
-  sendMessageToRoom(`${macAddress}_status`, dataMsg);
+  sendMessageToRoom(`${macAddress}_status`, "gate_status", dataMsg);
 };
 
 const checkCardAndPayment = async (body) => {
