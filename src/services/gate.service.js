@@ -24,22 +24,22 @@ const checkCardAndPayment = async (body) => {
 
   let history = await History.findOne({ cardId, done: false });
   const isNewEntry = !history;
-  // Tại đây, bất kể isNewEntry là true hay false, ta đều gọi emitDeviceStatus
-  emitDeviceStatus(macAddress, isNewEntry ? "access" : "exit", {
-    cardId: cardId,
-    time: Date.now(),
-  });
 
   if (isNewEntry) {
     history = await createNewHistoryEntry(cardId, rfid, macAddress);
   } else {
-    await updateHistoryEntry(history, rfid, macAddress);
+    await updateHistoryEntry(cardId, history, rfid, macAddress);
   }
 
   return history;
 };
 
 const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
+  // Tại đây, bất kể isNewEntry là true hay false, ta đều gọi emitDeviceStatus
+  emitDeviceStatus(macAddress, "access", {
+    cardId: cardId,
+    time: Date.now(),
+  });
   return await History.create({
     cardId,
     time_check_in: Date.now(),
@@ -50,7 +50,12 @@ const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
   });
 };
 
-const updateHistoryEntry = async (history, rfid, macAddress) => {
+const updateHistoryEntry = async (cardId, history, rfid, macAddress) => {
+  // Tại đây, bất kể isNewEntry là true hay false, ta đều gọi emitDeviceStatus
+  emitDeviceStatus(macAddress, "exit", {
+    cardId: cardId,
+    time: Date.now(),
+  });
   const cost = 3000; // VND
   const millisecondsInADay = 1000 * 60 * 60 * 24;
   const daysCheckedIn = Math.ceil(
