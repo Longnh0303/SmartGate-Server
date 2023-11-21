@@ -52,10 +52,12 @@ const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
 };
 
 const updateHistoryEntry = async (cardId, history, rfid, macAddress) => {
-  emitDeviceStatus(macAddress, "exit", {
-    cardId: cardId,
-    time: Date.now(),
-  });
+  emitDeviceStatus(macAddress, "error", "Thẻ đã ra");
+  const dataMsg = {
+    type: "exit",
+    data: { cardId: cardId, time: Date.now() },
+  };
+  sendMessageToRoom(`${macAddress}_status`, "exit_status", dataMsg);
   const cost = 3000; // VND
   const millisecondsInADay = 1000 * 60 * 60 * 24;
   const daysCheckedIn = Math.ceil(
