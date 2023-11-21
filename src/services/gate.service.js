@@ -7,10 +7,6 @@ const { sendMessageToRoom } = require("./socket.service");
 
 const checkCardAndPayment = async (body) => {
   const { cardId, macAddress } = body;
-  emitDeviceStatus(macAddress, "access", {
-    cardId: cardId,
-    time: Date.now(),
-  });
   const rfid = await rfidService.getRfidByCardId(cardId);
 
   if (!rfid) {
