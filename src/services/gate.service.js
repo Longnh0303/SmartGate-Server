@@ -25,22 +25,18 @@ const checkCardAndPayment = async (body) => {
   const isNewEntry = !history;
   if (isNewEntry) {
     history = await createNewHistoryEntry(cardId, rfid, macAddress);
-    emitDeviceStatus(macAddress, "access", {
-      cardId: cardId,
-      time: Date.now(),
-    });
   } else {
     await updateHistoryEntry(history, rfid, macAddress);
-    emitDeviceStatus(macAddress, "exit", {
-      cardId: cardId,
-      time: Date.now(),
-    });
   }
 
   return history;
 };
 
 const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
+  emitDeviceStatus(macAddress, "access", {
+    cardId: cardId,
+    time: Date.now(),
+  });
   return await History.create({
     cardId,
     time_check_in: Date.now(),
@@ -52,6 +48,10 @@ const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
 };
 
 const updateHistoryEntry = async (history, rfid, macAddress) => {
+  emitDeviceStatus(macAddress, "exit", {
+    cardId: cardId,
+    time: Date.now(),
+  });
   const cost = 3000; // VND
   const millisecondsInADay = 1000 * 60 * 60 * 24;
   const daysCheckedIn = Math.ceil(
