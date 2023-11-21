@@ -7,7 +7,7 @@ const checkCardAndPayment = catchAsync(async (req, res, _next) => {
     type: "access",
     data: { cardId: req.body.cardId, time: Date.now() },
   };
-  sendMessageToRoom(`${eq.body.mac}_status`, dataMsg);
+  sendMessageToRoom(`${req.body.macAddress}_status`, dataMsg);
   const result = await gateService.checkCardAndPayment(req.body);
   res.send(result);
 });
