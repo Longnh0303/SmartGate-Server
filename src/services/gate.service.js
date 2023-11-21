@@ -35,10 +35,11 @@ const checkCardAndPayment = async (body) => {
 };
 
 const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
-  emitDeviceStatus(macAddress, "access", {
-    cardId: cardId,
-    time: Date.now(),
-  });
+  const dataMsg = {
+    type: "access",
+    data: { cardId: cardId, time: Date.now() },
+  };
+  sendMessageToRoom(`${macAddress}_status`, "access_status", dataMsg);
   return await History.create({
     cardId,
     time_check_in: Date.now(),
