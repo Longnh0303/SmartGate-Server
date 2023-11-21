@@ -8,6 +8,7 @@ const initSocketHandler = (httpServer) => {
   try {
     io = socketIO(httpServer, {
       cors: corsOptions,
+      transports: ["websocket"],
       allowEIO3: true,
     });
     logger.info("Socket.io initialized");
@@ -45,7 +46,7 @@ const initSocketHandler = (httpServer) => {
 const sendMessageToRoom = (roomName, message) => {
   try {
     io.to(roomName).emit("device_status", message);
-    logger.info("Socket sent message!")
+    logger.info("Socket sent message!");
   } catch (error) {
     logger.error(`Error sending message to room ${roomName}: ${error.message}`);
   }
