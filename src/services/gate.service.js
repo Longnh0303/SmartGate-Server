@@ -5,13 +5,14 @@ const ApiError = require("../utils/ApiError");
 const logger = require("../config/logger");
 const { sendMessageToRoom } = require("./socket.service");
 
+const emitDeviceStatus = (macAddress, type, message) => {
+  const dataMsg = { type, data: { message } };
+  sendMessageToRoom(`${macAddress}_status`, dataMsg);
+};
+
 const checkCardAndPayment = async (body) => {
   const { cardId, macAddress } = body;
   const rfid = await rfidService.getRfidByCardId(cardId);
-  const emitDeviceStatus = (macAddress, type, message) => {
-    const dataMsg = { type, data: { message } };
-    sendMessageToRoom(`${macAddress}_status`, dataMsg);
-  };
 
   if (!rfid) {
     emitDeviceStatus(macAddress, "error", "Thẻ không tồn tại trong hệ thống");
@@ -23,20 +24,23 @@ const checkCardAndPayment = async (body) => {
 
   let history = await History.findOne({ cardId, done: false });
   const isNewEntry = !history;
+
   if (isNewEntry) {
     history = await createNewHistoryEntry(cardId, rfid, macAddress);
   } else {
     await updateHistoryEntry(history, rfid, macAddress);
   }
 
+  // Tại đây, bất kể isNewEntry là true hay false, ta đều gọi emitDeviceStatus
+  emitDeviceStatus(macAddress, isNewEntry ? "access" : "exit", {
+    cardId: cardId,
+    time: Date.now(),
+  });
+
   return history;
 };
 
 const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
-  emitDeviceStatus(macAddress, "access", {
-    cardId: cardId,
-    time: Date.now(),
-  });
   return await History.create({
     cardId,
     time_check_in: Date.now(),
@@ -48,10 +52,6 @@ const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
 };
 
 const updateHistoryEntry = async (history, rfid, macAddress) => {
-  emitDeviceStatus(macAddress, "exit", {
-    cardId: cardId,
-    time: Date.now(),
-  });
   const cost = 3000; // VND
   const millisecondsInADay = 1000 * 60 * 60 * 24;
   const daysCheckedIn = Math.ceil(
