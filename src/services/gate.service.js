@@ -35,6 +35,7 @@ const checkCardAndPayment = async (body) => {
 };
 
 const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
+  emitDeviceStatus(macAddress, "error", "Thẻ đã vào");
   const dataMsg = {
     type: "access",
     data: { cardId: cardId, time: Date.now() },
