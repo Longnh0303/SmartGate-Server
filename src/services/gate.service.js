@@ -6,10 +6,6 @@ const logger = require("../config/logger");
 const { sendMessageToRoom } = require("./socket.service");
 
 const checkCardAndPayment = async (body) => {
-  const emitDeviceStatus = (macAddress, type, message) => {
-    const dataMsg = { type, data: { message } };
-    sendMessageToRoom(`${macAddress}_status`, "gate_status", dataMsg);
-  };
   const { cardId, macAddress } = body;
   const rfid = await rfidService.getRfidByCardId(cardId);
 
@@ -19,13 +15,12 @@ const checkCardAndPayment = async (body) => {
       httpStatus.BAD_REQUEST,
       "Thẻ không tồn tại trong hệ thống"
     );
+  } else {
+    emitDeviceStatus(macAddress, "access", {
+      cardId: cardId,
+      time: Date.now(),
+    });
   }
-  emitDeviceStatus(macAddress, "error", "Thẻ đã vào");
-  const dataMsg = {
-    type: "access",
-    data: { cardId: cardId, time: Date.now() },
-  };
-  sendMessageToRoom(`${macAddress}_status`, "access_status", dataMsg);
 
   let history = await History.findOne({ cardId, done: false });
   const isNewEntry = !history;
@@ -33,10 +28,15 @@ const checkCardAndPayment = async (body) => {
   if (isNewEntry) {
     history = await createNewHistoryEntry(cardId, rfid, macAddress);
   } else {
-    await updateHistoryEntry(cardId, history, rfid, macAddress);
+    await updateHistoryEntry(history, rfid, macAddress);
   }
 
   return history;
+};
+
+const emitDeviceStatus = (macAddress, type, message) => {
+  const dataMsg = { type, data: { message } };
+  sendMessageToRoom(`${macAddress}_status`, dataMsg);
 };
 
 const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
@@ -50,7 +50,7 @@ const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
   });
 };
 
-const updateHistoryEntry = async (cardId, history, rfid, macAddress) => {
+const updateHistoryEntry = async (history, rfid, macAddress) => {
   const cost = 3000; // VND
   const millisecondsInADay = 1000 * 60 * 60 * 24;
   const daysCheckedIn = Math.ceil(
