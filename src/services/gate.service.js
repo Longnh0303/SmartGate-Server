@@ -50,6 +50,10 @@ const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
 };
 
 const updateHistoryEntry = async (cardId, history, rfid, macAddress) => {
+  emitDeviceStatus(macAddress, "exit", {
+    cardId: cardId,
+    time: Date.now(),
+  });
   const cost = 3000; // VND
   const millisecondsInADay = 1000 * 60 * 60 * 24;
   const daysCheckedIn = Math.ceil(
@@ -77,10 +81,6 @@ const updateHistoryEntry = async (cardId, history, rfid, macAddress) => {
 
   await rfid.save();
   await history.save();
-  emitDeviceStatus(macAddress, "exit", {
-    cardId: cardId,
-    time: Date.now(),
-  });
 };
 
 module.exports = {
