@@ -16,7 +16,10 @@ const checkCardAndPayment = async (body) => {
       "Thẻ không tồn tại trong hệ thống"
     );
   } else {
-    emitDeviceStatus(macAddress, "access", { cardId: cardId });
+    emitDeviceStatus(macAddress, "access", {
+      cardId: cardId,
+      time: Date.now(),
+    });
   }
 
   let history = await History.findOne({ cardId, done: false });
