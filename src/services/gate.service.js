@@ -23,23 +23,19 @@ const checkCardAndPayment = async (body) => {
 
   let history = await History.findOne({ cardId, done: false });
   const isNewEntry = !history;
-
   if (isNewEntry) {
     history = await createNewHistoryEntry(cardId, rfid, macAddress);
-    emitDeviceStatus(macAddress, "access", {
-      cardId: cardId,
-      time: Date.now(),
-    });
   } else {
     await updateHistoryEntry(history, rfid, macAddress);
-    emitDeviceStatus(macAddress, "exit", {
-      cardId: cardId,
-      time: Date.now(),
-    });
   }
 
   return history;
 };
+
+emitDeviceStatus(macAddress, isNewEntry ? "access" : "exit", {
+  cardId: cardId,
+  time: Date.now(),
+});
 
 const createNewHistoryEntry = async (cardId, rfid, macAddress) => {
   return await History.create({
