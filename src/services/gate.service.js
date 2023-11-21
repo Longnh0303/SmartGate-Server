@@ -23,12 +23,13 @@ const checkCardAndPayment = async (body) => {
   }
 
   let history = await History.findOne({ cardId, done: false });
+  let wait;
   const isNewEntry = !history;
 
   if (isNewEntry) {
     history = await createNewHistoryEntry(cardId, rfid, macAddress);
   } else {
-    await updateHistoryEntry(history, rfid, macAddress);
+    wait = await updateHistoryEntry(history, rfid, macAddress);
   }
 
   // Tại đây, bất kể isNewEntry là true hay false, ta đều gọi emitDeviceStatus
