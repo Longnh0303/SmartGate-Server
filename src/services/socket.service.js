@@ -8,9 +8,7 @@ const initSocketHandler = (httpServer) => {
   try {
     io = socketIO(httpServer, {
       cors: corsOptions,
-      transports: ["polling", "websocket"],
       allowEIO3: true,
-      credentials: true,
     });
     logger.info("Socket.io initialized");
 
