@@ -43,9 +43,8 @@ const initMQTTHandler = () => {
         data: { topic, message: message.toString() },
       };
       const room = `${existingDevice.mac}_status`;
-      const eventName = "device_status";
       // TODO:
-      sendMessageToRoom(room, eventName, dataMsg);
+      sendMessageToRoom(room, dataMsg);
     } else {
       // Thiết bị chưa tồn tại, tạo mới
       await createDevice({ mac: mac });
