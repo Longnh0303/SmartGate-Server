@@ -1,6 +1,6 @@
 const catchAsync = require("../utils/catchAsync");
 const { gateService } = require("../services");
-const { sendMessageToRoom } = require("./socket.service");
+const { sendMessageToRoom } = require("../services/socket.service");
 
 const checkCardAndPayment = catchAsync(async (req, res, _next) => {
   const dataMsg = {
