@@ -9,6 +9,7 @@ const initSocketHandler = (httpServer) => {
     io = socketIO(httpServer, {
       cors: corsOptions,
       allowEIO3: true,
+      pingTimeout: 60000,
     });
     logger.info("Socket.io initialized");
 
