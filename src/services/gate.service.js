@@ -67,6 +67,9 @@ const updateHistoryEntry = async (history, rfid, macAddress) => {
   } else if (rfid.role === "guest") {
     history.fee = cost;
     history.new_balance = rfid.balance;
+  } else {
+    history.fee = 0;
+    history.new_balance = rfid.balance;
   }
 
   history.time_check_out = Date.now();
