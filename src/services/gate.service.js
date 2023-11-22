@@ -10,28 +10,28 @@ const checkCardAndPayment = async (body) => {
 
   emitDeviceStatus(macAddress, "access", { cardId: cardId });
 
-  // const rfid = await rfidService.getRfidByCardId(cardId);
+  const rfid = await rfidService.getRfidByCardId(cardId);
 
-  // if (!rfid) {
-  //   emitDeviceStatus(macAddress, "error", "Thẻ không tồn tại trong hệ thống");
-  //   throw new ApiError(
-  //     httpStatus.BAD_REQUEST,
-  //     "Thẻ không tồn tại trong hệ thống"
-  //   );
-  // } else {
-  //   // emitDeviceStatus(macAddress, "access", { cardId: cardId });
-  // }
+  if (!rfid) {
+    emitDeviceStatus(macAddress, "error", "Thẻ không tồn tại trong hệ thống");
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Thẻ không tồn tại trong hệ thống"
+    );
+  } else {
+    emitDeviceStatus(macAddress, "access", { cardId: cardId });
+  }
 
-  // let history = await History.findOne({ cardId, done: false });
-  // const isNewEntry = !history;
+  let history = await History.findOne({ cardId, done: false });
+  const isNewEntry = !history;
 
-  // if (isNewEntry) {
-  //   history = await createNewHistoryEntry(cardId, rfid, macAddress);
-  // } else {
-  //   await updateHistoryEntry(history, rfid, macAddress);
-  // }
+  if (isNewEntry) {
+    history = await createNewHistoryEntry(cardId, rfid, macAddress);
+  } else {
+    await updateHistoryEntry(history, rfid, macAddress);
+  }
 
-  return;
+  return history;
 };
 
 const emitDeviceStatus = (macAddress, type, message) => {
